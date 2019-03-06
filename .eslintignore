@@ -1,0 +1,8 @@
+coverage
+/app/**
+/test/**
+/config/**
+/script/**
+/mock/**
+/src/assets/mock/**
+/node_modules/**
