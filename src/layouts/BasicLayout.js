@@ -7,16 +7,13 @@ import { Route, Redirect, Switch } from 'react-router-dom'
 import { ContainerQuery } from 'react-container-query'
 import classNames from 'classnames'
 import GlobalHeader from '../components/GlobalHeader'
-import GlobalFooter from '../components/GlobalFooter'
 import SiderMenu from '../components/SiderMenu'
 import { getRoutes } from '../utils'
 import { getMenuData } from '../routes/menu'
-import { fetchNotice, clearNotice } from '../store/Global/action'
 import { fetchCurrentUser } from '../store/User/action'
-import { logout } from '../store/Login/action'
 import Immutable from 'immutable'
 import { Error404 } from '../routes/Error'
-import { ChangeLayoutCollapsed } from '../store/Global/action'
+
 import logo from '../assets/logo/logo.png'
 
 /**
@@ -87,27 +84,20 @@ class BasicLayout extends React.PureComponent {
   }
 
   handleMenuCollapse = (collapsed) => {
-    this.props.dispatch({
-      type: ChangeLayoutCollapsed,
-      payload: collapsed,
-    })
+
   }
 
   handleMenuClick = ({key}) => {
-    if (key === 'logout') {
-      this.props.dispatch(logout())
-    }
+
   }
 
   handleNoticeClear = (type) => {
     message.success(`清空了${type}`)
-    this.props.dispatch(clearNotice(type))
+
   }
 
   handleNoticeVisibleChange = (visible) => {
-    if (visible) {
-      this.props.dispatch(fetchNotice())
-    }
+
   }
 
   render () {

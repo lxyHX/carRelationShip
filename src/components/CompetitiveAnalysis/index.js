@@ -3,15 +3,12 @@ import styles from './index.css';
 import { Cascader,Button,Divider,Radio,Drawer,Row, Col,Spin ,Menu,Tag} from 'antd';
 import ownerCarsOption from '../../assets/mock/ownerCars'
 import comptiterCars from '../../assets/mock/comptiterCars'
-// import {ownerIndexViewOption,level_1_nodes,nodeMap, links} from '../../assets/mock/ownerIndexViewOption'
 import {ownerIndexViewOption,treeData} from '../../assets/mock/ownerIndexTreeOption'
 import indexBarOption from '../../assets/mock/indexBarOption'
 import getComprehensiveScoreOption from '../../assets/mock/comprehensiveScore'
-import indexDatas from "../../assets/mock/indexDetail";
+import {queryCommentCountByTagCode} from '../../service/car'
 import uuid from 'uuid/v1'
-const level_1 = 10;
-const level_2 = 8;
-const level_3 = 6;
+
 const echarts = require('echarts');
 
 const RadioButton = Radio.Button;
@@ -47,6 +44,8 @@ export default class CompetitiveAnalysis extends PureComponent {
             renderName: '',
             subIndexRenderName: '',
             subIndexList: [],
+            selectTagCode: 'G00',
+            selectCarId : '1',
         };
 
         this.plusOrMinus = 'p';
@@ -55,7 +54,6 @@ export default class CompetitiveAnalysis extends PureComponent {
 
         this.indexBarOptionsNegative  = [];
 
-        this.indexBarChartContainer = [];
     }
 
     ownerCarChange = (value) => {
@@ -84,6 +82,8 @@ export default class CompetitiveAnalysis extends PureComponent {
             renderName: treeData.children[0]["name"],
             subIndexList: treeData.children[0]["children"],
         });
+        // 查询默认的车型的第一个一级指标的数据
+
         setTimeout(function (){
             _self.renderIndexChart();
             _self.renderComprehensiveRadar();
@@ -92,6 +92,14 @@ export default class CompetitiveAnalysis extends PureComponent {
                 spinning: false,
             });
         },0);
+    }
+
+    async queryTagCommentCount () {
+       await queryCommentCountByTagCode({
+           carid: this.state.selectCarId,
+           code: this.state.selectTagCode,
+           positive: this.plusOrMinus === 'p',
+       });
     }
 
     nodeClickHandler (params) {
@@ -465,7 +473,6 @@ export default class CompetitiveAnalysis extends PureComponent {
                         </RadioGroup>
                     </div>
                         <div className={styles["index-feedback"]} id="index_feedback_owner_view"/>
-                        {/*<div className={styles["index-feedback"]} id="index_feedback_competitor_view"/>*/}
 
                 </div>
             </Spin>

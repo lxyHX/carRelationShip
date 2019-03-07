@@ -6,12 +6,6 @@ import { combineReducers } from 'redux-immutable'
 import config from '../config'
 import Immutable from 'immutable'
 import user from './User'
-import state from './Global'
-import login from './Login'
-import register from './Register'
-import widget from './Widget'
-import projectized from './Projectized';
-import authorization from './authorization';
 
 let {reduxDevToolEnable} = config
 let defaultState = {
@@ -63,7 +57,7 @@ const composeEnhancers =
   }) : compose
 
 export default createStore(
-  combineReducers({user, ...state, login, register, widget, projectized, authorization}),
+  combineReducers({user}),
   Immutable.fromJS(defaultState),
   composeEnhancers(applyMiddleware(
     thunkMiddleware

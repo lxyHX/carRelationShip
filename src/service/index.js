@@ -1,10 +1,10 @@
-import { notification } from 'antd';
 import config from '../config';
 
 let {
   apiPrefix,
   resourcePrefix,
-  serverPrefix}=config;
+  serverPrefix,
+}=config;
 
 
 function checkStatus(response,enableNotification=true) {
