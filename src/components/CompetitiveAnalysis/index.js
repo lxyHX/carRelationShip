@@ -54,6 +54,21 @@ export default class CompetitiveAnalysis extends PureComponent {
 
         this.indexBarOptionsNegative  = [];
 
+        // 指标对象的集合
+        this.tagObjList = [];
+
+        this.tagBarProps = {
+            subTags : [], //二三级指标名称
+            owner: {
+                pCommentCount: [], // 各指标正面反馈的统计数
+                mCommentCount: [], // 各指标负面反馈的统计数
+            },
+            competitor: {
+                pCommentCount: [], // 各指标正面反馈的统计数
+                mCommentCount: [], // 各指标负面反馈的统计数
+            },
+        }
+
     }
 
     ownerCarChange = (value) => {
@@ -95,11 +110,16 @@ export default class CompetitiveAnalysis extends PureComponent {
     }
 
     async queryTagCommentCount () {
-       await queryCommentCountByTagCode({
+      const rep = await queryCommentCountByTagCode({
            carid: this.state.selectCarId,
            code: this.state.selectTagCode,
            positive: this.plusOrMinus === 'p',
        });
+      if (rep.success) {
+          let data = rep.data;
+          this.tagObjList = data.name;
+
+      }
     }
 
     nodeClickHandler (params) {
