@@ -1,5 +1,14 @@
 const echarts = require('echarts');
 let getOption = () => ({
+    title: {
+        text: '基础雷达图',
+        left: 'center',
+        bottom: 0,
+        textStyle: {
+            fontSize: 13,
+            color: "#666"
+        }
+    },
   tooltip: {},
   radar: {
     radius: 100,
@@ -11,80 +20,62 @@ let getOption = () => ({
         padding: [3, 5]
       }
     },
-    indicator: [
-        {
-            'name': '外观造型',
-            'max': 5
-        }, {
-            'name': '内饰造型',
-            'max': 5
-        }, {
-            'name': '外观品质',
-            'max': 5
-        }, {
-            'name': '内饰品质',
-            'max': 5
-        }, {
-            'name': '动力性',
-            'max': 5
-        }, {
-            'name': '驾驶操控性',
-            'max': 5
-        }, {
-            'name': '便利性',
-            'max': 5
-        }, {
-            'name': '安全性',
-            'max': 5
-        }, {
-            'name': '使用经济性',
-            'max': 5
-        }, {
-            'name': '舒适性',
-            'max': 5
-        }, {
-            'name': '乘坐空间',
-            'max': 5
-        }, {
-            'name': '储物空间',
-            'max': 5
-        }, {
-            'name': '通过性',
-            'max': 5
-        }, {
-            'name': '智能信息娱乐系统',
-            'max': 5
-        }, {
-            'name': '新能源特性',
-            'max': 5
-        }
-    ]
+    indicator: [],
   },
   series: [{
-    name: '预算 vs 开销（Budget vs spending）',
     type: 'radar',
-    // areaStyle: {normal: {}},
     data : [
-      {
-        value : [
-              ((Math.random()* 0.5 + 0.5) * 5).toFixed(1),
-              ((Math.random()* 0.5 + 0.5) * 5).toFixed(1),
-              ((Math.random()* 0.5 + 0.5) * 5).toFixed(1),
-              ((Math.random()* 0.5 + 0.5) * 5).toFixed(1),
-              ((Math.random()* 0.5 + 0.5) * 5).toFixed(1),
-              ((Math.random()* 0.5 + 0.5) * 5).toFixed(1),
-              ((Math.random()* 0.5 + 0.5) * 5).toFixed(1),
-              ((Math.random()* 0.5 + 0.5) * 5).toFixed(1),
-              ((Math.random()* 0.5 + 0.5) * 5).toFixed(1),
-              ((Math.random()* 0.5 + 0.5) * 5).toFixed(1),
-              ((Math.random()* 0.5 + 0.5) * 5).toFixed(1),
-              ((Math.random()* 0.5 + 0.5) * 5).toFixed(1),
-              ((Math.random()* 0.5 + 0.5) * 5).toFixed(1),
-              ((Math.random()* 0.5 + 0.5) * 5).toFixed(1),
-              ((Math.random()* 0.5 + 0.5) * 5).toFixed(1)
-         ],
-        name : '预算分配（Allocated Budget）'
-      }
+        {
+          lineStyle: {color: "rgb(63, 167, 220)"},
+          label: {normal: {color:"rgb(63, 167, 220)"}},
+          value : [
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+            ],
+          name : 'A',
+          areaStyle: {
+              normal: {
+                  opacity: 0.6,
+                  color: "rgba(63, 167, 220,0.5)"
+              }
+          }
+        },
+        {
+            lineStyle: {color: "rgb(112, 145, 196)"},
+            label: {normal: {color:"rgb(112, 145, 196)"}},
+            value : [
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+                parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
+            ],
+            name : 'B'
+        }
+
     ],
       label: {
           normal: {
@@ -92,21 +83,6 @@ let getOption = () => ({
               formatter:function(params) {
                   return params.value;
               }
-          }
-      },
-      areaStyle: {
-      normal: {
-              opacity: 0.7,
-              color: new echarts.graphic.RadialGradient(0.5, 0.5, 1, [
-                  {
-                      color: '#B8D3E4',
-                      offset: 0
-                  },
-                  {
-                      color: '#72ACD1',
-                      offset: 1
-                  }
-              ])
           }
       }
   }]

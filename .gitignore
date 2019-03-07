@@ -3,8 +3,6 @@
 # dependencies
 /node_modules
 
-# build css
-src/**/*.css
 
 # testing
 /coverage

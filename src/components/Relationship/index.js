@@ -117,9 +117,14 @@ class Relationship extends PureComponent {
             this.mychart.setOption(chartOption);
             this.mychart.on('click', (option) => {
                 let node = option.data;
+                // 获取竞争车型
+                let competeLinks = links.filter(e => e.source === node.name || e.target === node.name);
                 if (node.category === '传祺') {
                     // 页面跳转
-                    this.props.history.push('/performance/CompetitiveAnalysis');
+                    this.props.history.push('/performance/CompetitiveAnalysis',{query: {
+                        owner: node.name,
+                        competitors: competeLinks.map(e => e.source === node.name ? e.target : e.source),
+                    }});
                 }
             });
             this.mychart.setOption(chartOption);

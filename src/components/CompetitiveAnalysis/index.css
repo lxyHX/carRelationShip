@@ -1,0 +1,64 @@
+.main-wrap {
+    width: 100%;
+    min-width: 1500px;
+    background-color: #FFF;
+    min-height:500px;
+    height: 100%;
+    padding: 20px;
+}
+.car-selector,.index-feedback {
+    background-color: #f3f3f3;
+    padding: 10px;
+    box-sizing: border-box;
+    line-height: 30px;
+}
+.car-selector {
+    height: 50px;
+}
+.index-feedback {
+    height: 800px;
+    /*background: url("../../assets/images/xk_bg.jpg") center no-repeat;*/
+}
+.h2 {
+    font-family: "Microsoft YaHei UI";
+    margin-bottom: 16px;
+    color: rgba(0,0,0,.85);
+    font-weight: 500;
+}
+
+.jp-car {
+    margin-left: 50px;
+}
+.indent-content {
+    width: 95%;
+    margin: 0 auto;
+}
+
+.contrastRow {
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+}
+.contrast-col-title {
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+}
+.contrastTitle {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.comprehensiveRadarWrap {
+    width: 400px;
+    height: 300px;
+    margin: 0 auto;
+}
+.index-bar-wrap {
+    width: 100%;
+    min-width: 600px;
+    height: 150px;
+    margin: auto;
+}

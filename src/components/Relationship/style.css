@@ -1,0 +1,5 @@
+.relationShipWrap {
+    width: 100%;
+    min-height: calc(100vh - 100px);
+    background: url("../../assets/images/relationship_bg.jpg");
+}

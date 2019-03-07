@@ -1,21 +1,15 @@
 import React, { PureComponent } from 'react';
 import styles from './index.css';
 import { Cascader,Button,Divider,Radio,Drawer,Row, Col,Spin ,Menu,Tag} from 'antd';
-import ownerCarsOption from '../../assets/mock/ownerCars'
-import comptiterCars from '../../assets/mock/comptiterCars'
 import {ownerIndexViewOption,treeData} from '../../assets/mock/ownerIndexTreeOption'
 import indexBarOption from '../../assets/mock/indexBarOption'
 import getComprehensiveScoreOption from '../../assets/mock/comprehensiveScore'
-import {queryCommentCountByTagCode} from '../../service/car'
+import {queryCommentCountByTagCode,queryCarList,queryFirstLevelTag,queryCompositeScore} from '../../service/car'
 import uuid from 'uuid/v1'
-
 const echarts = require('echarts');
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
-
-const feedBackGood = ['优秀','很好','方便','好看','非常满意','实用'];
-const feedBackBad = ['不方便','不好看','不满意','不实用'];
 
 export default class CompetitiveAnalysis extends PureComponent {
     constructor(props) {
@@ -26,102 +20,158 @@ export default class CompetitiveAnalysis extends PureComponent {
             spinning: true,
             drawerVisible: false,
             drawerTitle: "",
-            ownerCarOption: ownerCarsOption,
-            competitorCarOption: comptiterCars,
+            ownerCarOption: [],
+            competitorCarOption: [],
             ownerIndexViewOption: ownerIndexViewOption,
             competitorIndexViewOption: ownerIndexViewOption,
-            ownerCar: ['传祺 GS5','2019款','1.5T 自动 235T 舒适版 10.98万'],
-            competitorCar: ['荣威', 'RX5', '2019款', '20T 两驱手动4G互联铂金版 11.98万'],
+            selectOwnerCar: [],
+            selectCompetitorCar: [],
             analysisType: 'b',
-            ownerComprehensiveScoreOption: getComprehensiveScoreOption(),
-            competitorComprehensiveScoreOption: getComprehensiveScoreOption(),
             indexDatasFeedbacks: treeData,
             analysisOwnerCarName: '',
             analysisCmpCarName: '',
-            selectLv1Index: [treeData.children[0]["id"]],
+            tagMenuSelected: [],
             selectLv2Index: '',
             renderId: '',
             renderName: '',
             subIndexRenderName: '',
             subIndexList: [],
             selectTagCode: 'G00',
-            selectCarId : '1',
+            firstTagData: [],
         };
 
         this.plusOrMinus = 'p';
 
-        this.indexBarOptionsPositive = [];
-
-        this.indexBarOptionsNegative  = [];
-
-        // 指标对象的集合
-        this.tagObjList = [];
-
+        // 指标对比柱图数据
         this.tagBarProps = {
             subTags : [], // 二三级指标名称
             ownerCount: [], // 自有车型反馈统计
             competitorCount: [], // 竞品车型反馈统计
-        }
+        };
 
+        // 雷达图数据
+        this.radarProps = {
+            positive: [[],[]],  // 正面评价，两组数据
+            negative:[[],[]],   // 负面评价，两组数据
+        }
     }
 
     ownerCarChange = (value) => {
         this.setState({
-            ownerCar: value,
+            selectOwnerCar: value,
         });
     };
 
     competitorCarChange = (value) => {
         this.setState({
-            competitorCar: value,
+            selectCompetitorCar: value,
         });
     };
 
-   componentWillMount () {
-       // 随机生成评论
-       this.randomComment(this.state.indexDatasFeedbacks);
+   async componentWillMount () {
+       // 获取参数
+       const {owner,competitors} = this.props.location.state.query;
+       // 获取车辆信息
+       await this._queryCarList(owner,competitors);
    }
 
     async componentDidMount () {
-        let _self = this;
+       await this._initDataAndChart();
+       await this._queryFirstLevelTag();
+    }
 
-        this.setState({
-            selectLv1Index: [treeData.children[0]["id"]],
-            renderId: treeData.children[0]["id"],
-            renderName: treeData.children[0]["name"],
-            subIndexList: treeData.children[0]["children"],
-        });
-        // 查询默认的车型的第一个一级指标的数据
-        await this.queryTagCommentCount();
-
-        setTimeout(function () {
+    // 在第一次加载 和 点击分析按钮 根据选择车辆初始化数据和图表
+   async  _initDataAndChart () {
+        // 选择车型的第一个一级指标二级三级指标的反馈统计
+        await this._queryTagCommentCount();
+        // 获取雷达图的数据
+       await this._queryCompositeScore();
+        setTimeout( () => {
             // 树图
-            _self.renderIndexChart();
+            this.renderIndexChart();
             // 指标雷达图
-            _self.renderComprehensiveRadar();
+            this.renderComprehensiveRadar();
             // 选中一级指标的二三级指标对比柱图
-            _self.renderSelectedIndexBar();
-            _self.setState({ spinning: false });
+            this.renderSelectedIndexBar();
+            this.setState({ spinning: false });
         },0);
     }
 
-    async queryTagCommentCount () {
+    //查询车辆集合
+    async _queryCarList (ownerCar, competitors) {
+        const rep = await queryCarList({
+            ownerCar: ownerCar,
+            competitors: competitors,
+        });
+        if (rep.success) {
+            let data = rep.data;
+            // 默认选中值
+            this.setState({
+                ownerCarOption: data.ownerCars,
+                competitorCarOption: data.competitorCars,
+                selectOwnerCar: [ data.ownerCars[0].value, data.ownerCars[0].children[0].value, data.ownerCars[0].children[0].children[0].value],
+                selectCompetitorCar: [ data.competitorCars[0].value,data.competitorCars[0].children[0].value, data.competitorCars[0].children[0].children[0].value],
+            });
+
+        }
+    }
+
+    // 获取二级三级指标的反馈统计
+    async _queryTagCommentCount () {
       const rep = await queryCommentCountByTagCode({
-           carid: this.state.selectCarId,
+           carId: this._getCarIdByCarName(this.state.selectOwnerCar,true),
            code: this.state.selectTagCode,
            positive: this.plusOrMinus === 'p',
        });
       if (rep.success) {
           let data = rep.data;
-          this.tagObjList = data.name;
+          this.tagObjList = data.tags;
           this.tagBarProps.subTags = data.tags.map(e => e.name);
           this.tagBarProps.ownerCount = data.values[0];
           this.tagBarProps.competitorCount = data.values[1];
       }
     }
 
-    nodeClickHandler (params) {
+    // 获取一级指标信息
+    async _queryFirstLevelTag () {
+        const rep = await queryFirstLevelTag();
+        if (rep.success) {
+            let data = rep.data;
+            this.setState({
+                firstTagData: data,
+                tagMenuSelected: [data[0].id],
+            });
+        }
+    }
 
+    // 获取正负面综合评分信息
+    async _queryCompositeScore () {
+        const rep = await queryCompositeScore({
+            ownerCarId: this._getCarIdByCarName(this.state.selectOwnerCar,true),
+            competitorCarId: this._getCarIdByCarName(this.state.selectCompetitorCar,false),
+        });
+        if (rep.success) {
+            let {positive,negative} = rep.data;
+            this.radarProps.positive = positive;
+            this.radarProps.negative = negative;
+        }
+    }
+
+    // 通过车辆选择信息查询车辆Id ['传奇GS5','2019款','2.0T 精英型']
+    _getCarIdByCarName (carNameArr,isOwner) {
+        let carOption = isOwner ? this.state.ownerCarOption : this.state.competitorCarOption;
+        carNameArr.forEach((carName,i) => {
+            let filterCarOption = carOption.filter(e => e.value === carName)[0];
+            if (i < carNameArr.length - 1) {
+                carOption = filterCarOption.children;
+            } else {
+                carOption = filterCarOption
+            }
+        });
+        return carOption.id;
+    }
+
+    nodeClickHandler (params) {
         // 展开反馈内容
         if (!params.data || !params.data.leaf) return;
         this.setState({
@@ -139,7 +189,7 @@ export default class CompetitiveAnalysis extends PureComponent {
     // 指标分析图-自有车型
     renderOwnerIndexChart = () => {
         let option = this.state.ownerIndexViewOption;
-        if (this.state.ownerCar.length > 0) {
+        if (this.state.selectOwnerCar.length > 0) {
             option.title.text = this.state.analysisOwnerCarName;
         }
         if (!this.myChart) {
@@ -160,7 +210,7 @@ export default class CompetitiveAnalysis extends PureComponent {
     // 指标分析图-竞品车型
     renderCompetitorIndexChart = () => {
         let option = this.state.competitorIndexViewOption;
-        if (this.state.competitorCar.length > 0) {
+        if (this.state.selectCompetitorCar.length > 0) {
             option.title.text = this.state.analysisCmpCarName;
         }
         if (!this.myChart) {
@@ -169,19 +219,36 @@ export default class CompetitiveAnalysis extends PureComponent {
         this.myChart.setOption(option);
     };
 
-    renderOwnerComprehensiveRadar () {
+    _renderPositiveRadar () {
         if (!this.ownerRadar) {
             this.ownerRadar = echarts.init(document.getElementById('comprehensiveRadarWrapOwner'));
         }
-        this.ownerRadar.setOption(this.state.ownerComprehensiveScoreOption);
+        let option = getComprehensiveScoreOption();
+        option.title.text = "正面口碑综合评分";
+        option.radar.indicator = this.state.firstTagData;
+        option.series[0].data[0].name = this.state.analysisOwnerCarName;
+        // option.series[0].data[0].value = this.radarProps.positive[0];
+        option.series[0].data[1].name = this.state.analysisCmpCarName;
+        // option.series[0].data[1].value = this.radarProps.positive[1];
+
+        this.ownerRadar.setOption(option);
     }
 
-    renderCompetitorComprehensiveRadar () {
+    _renderNegativeRadar () {
         if (!this.competitorRadar) {
             this.competitorRadar = echarts.init(document.getElementById('comprehensiveRadarWrapCompetitor'));
         }
-        this.competitorRadar.setOption(this.state.competitorComprehensiveScoreOption);
+        let option = getComprehensiveScoreOption();
+        option.title.text = "负面口碑综合评分";
+        option.radar.indicator = this.state.firstTagData;
+        option.series[0].data[0].name = this.state.analysisCmpCarName;
+        option.series[0].data[0].value = this.radarProps.negative[0];
+        option.series[0].data[1].name = this.state.analysisCmpCarName;
+        option.series[0].data[1].value = this.radarProps.negative[1];
+
+        this.competitorRadar.setOption(option);
     }
+
 
     renderSelectedIndexBar () {
         if (!this.indexBarChart) {
@@ -235,7 +302,7 @@ export default class CompetitiveAnalysis extends PureComponent {
             {
                 name: this.state.analysisCmpCarName,
                 type:'bar',
-                data: this.tagBarProps.ownerCount,
+                data: this.tagBarProps.competitorCount,
                 label: {
                     normal: {
                         show: true,
@@ -284,32 +351,28 @@ export default class CompetitiveAnalysis extends PureComponent {
 
     renderIndexChart = () => {
         this.setState({
-            analysisOwnerCarName: this.state.ownerCar.length > 0 ? this.state.ownerCar.reduce((a,b) => a + "/" + b) : '',
-            analysisCmpCarName: this.state.competitorCar.length > 0 ? this.state.competitorCar.reduce((a,b) => a + "/" + b) : '',
+            analysisOwnerCarName: this.state.selectOwnerCar.length > 0 ? this.state.selectOwnerCar.reduce((a,b) => a + "/" + b) : '',
+            analysisCmpCarName: this.state.selectCompetitorCar.length > 0 ? this.state.selectCompetitorCar.reduce((a,b) => a + "/" + b) : '',
         });
       this.renderOwnerIndexChart();
       // this.renderCompetitorIndexChart();
     };
 
+    // 渲染 正负面雷达图
     renderComprehensiveRadar = () => {
-        this.renderOwnerComprehensiveRadar();
-        this.renderCompetitorComprehensiveRadar();
+        this._renderPositiveRadar();
+        this._renderNegativeRadar();
     };
 
-    clickLv1Handle = ({ item, key }) => {
-        let seleceNode = this.state.indexDatasFeedbacks.children.filter(e => e.id === key)[0];
-        let name = seleceNode.name;
-        let reRender = false;
-        if (this.state.renderId !== key) {
-            reRender = true;
+    tagMenuSelected = async ({ item, key }) => {
+        if (this.selectTagCode !== key) {
+            this.setState({
+                tagMenuSelected: [key],
+            });
+            this.selectTagCode = key;
+            await this._queryTagCommentCount();
+            this.renderSelectedIndexBar()
         }
-        this.setState({
-            selectLv1Index: [key],
-            renderId: key,
-            renderName:name,
-            subIndexList: seleceNode.children,
-        })
-        if (reRender)  this.renderSelectedIndexBar()
     };
 
     clickTagHandle = (tagId,tagName) => {
@@ -350,88 +413,44 @@ export default class CompetitiveAnalysis extends PureComponent {
                 <Col span={4} className={styles["contrast-col-title"]}>综合评分</Col>
                 <Col span={10}>
                     <div className={styles.comprehensiveRadarWrap} id="comprehensiveRadarWrapOwner"/>
-                    <p>综合评分: 4.6</p>
+                    {/*<p>综合评分: 4.6</p>*/}
                 </Col>
                 <Col span={10}>
                     <div className={styles.comprehensiveRadarWrap} id="comprehensiveRadarWrapCompetitor"/>
-                    <p>综合评分: 4.5</p>
+                    {/*<p>综合评分: 4.5</p>*/}
                 </Col>
             </Row>
             <div style={{display: 'flex', justifyContent: 'center'}}>
-                <RadioGroup defaultValue="a" style={{marginTop: "20px"}} onChange={this.toggleIndexType}>
+                <RadioGroup defaultValue="a" style={{marginTop: "20px"}} onChange={this.toggleIndexType.bind(this)}>
                     <RadioButton value="a">正面口碑</RadioButton>
                     <RadioButton value="b">负面口碑</RadioButton>
                 </RadioGroup>
             </div>
             <div style={{display: 'flex', justifyContent: 'center', margin: '10px 0'}}>
-                <Menu  selectedKeys={this.state.selectLv1Index}  mode="horizontal"  onClick={this.clickLv1Handle.bind(this)}>
-                    {treeData.children.map(e => <Menu.Item key={e.id}> {e.name} </Menu.Item>)}
+                <Menu  selectedKeys={this.state.tagMenuSelected}  mode="horizontal"  onClick={this.tagMenuSelected.bind(this)}>
+                    {this.state.firstTagData.map(e => <Menu.Item key={e.id}> {e.name} </Menu.Item>)}
                 </Menu>
             </div>
-            <div style={{display: 'flex', justifyContent: 'center', margin: '5px 0',flexWrap: 'wrap'}}>
-                {this.state.subIndexList.map(e =>  <Tag  color={ this.state.selectLv2Index === e.id ? 'magenta' : 'blue'} style={{marginTop: '5px'}} onClick={this.clickTagHandle.bind(this,e.id,e.name)}>{e.name}</Tag>)}
-            </div>
+
             <Row className={styles.contrastRow} >
-                <Col span={4} className={styles["contrast-col-title"]}>{this.state.renderName + (this.state.subIndexRenderName ? (' 》 ' + this.state.subIndexRenderName) : '')}</Col>
-                <Col span={20}>
+                <Col span={24}>
                     <div className={styles['index-bar-wrap']} id="indexBarWrap"/>
                 </Col>
             </Row>
         </div>)
     }
 
-    randomComment (node) {
-        let id = uuid();
-        node.id = id;
-        // 随机生成反馈
-        this.randomPositiveComments(node);
-        // 随机反面反馈
-        this.randomPositiveComments(node,true);
-        if (node.children && node.children.length > 0) {
-             for (let i = 0; i < node.children.length; i++) {
-                 this.randomComment(node.children[i]);
-             }
-        }
-    }
 
-    randomPositiveComments (node,negative) {
-        const comments = negative ? feedBackBad.concat() : feedBackGood.concat();
-        // 1. 随机有几类反馈
-        const commentsTypesCount = Math.floor(Math.random() * comments.length) + 1;
-        let xAxisData = [];
-        for (let i = 0; i < commentsTypesCount; i++) {
-            let randomIndex = Math.floor(Math.random() * comments.length)
-            xAxisData.push(comments.splice(randomIndex,1)[0]);
-        }
-        // 2. 随机反馈的评论数量
-        let ownerData = [];
-        let competitorData = [];
-        for (let i = 0; i < xAxisData.length; i++) {
-            ownerData.push( Math.floor(Math.random() * (negative ? 100 : 1000)) );
-            competitorData.push( Math.floor(Math.random() * (negative ? 100 : 1000)) );
-        }
-        // 保存随机生成的数据
-        if (negative) {
-            this.indexBarOptionsNegative[node.id] = {
-                xAxisData: xAxisData,
-                ownerData: ownerData,
-                competitorData: competitorData,
-            };
-        } else {
-            this.indexBarOptionsPositive[node.id] = {
-                xAxisData: xAxisData,
-                ownerData: ownerData,
-                competitorData: competitorData,
-            };
-        }
-    }
 
-    toggleIndexType = (e) => {
+
+
+     toggleIndexType = async (e) => {
         if (e.target.value === 'b') {
             this.plusOrMinus = 'm';
         } else {
             this.plusOrMinus = 'p';
         }
+        await this._queryTagCommentCount();
         this.renderSelectedIndexBar();
     };
 
@@ -459,13 +478,13 @@ export default class CompetitiveAnalysis extends PureComponent {
                     <div className={styles["car-selector"]}>
                         <span>自有车型：</span>
                         <span>
-                            <Cascader allowClear={false} value={this.state.ownerCar} onChange = {this.ownerCarChange}  options={this.state.ownerCarOption} style = {{width: "400px"}}   placeholder="选择自有车型" />
+                            <Cascader allowClear={false} value={this.state.selectOwnerCar} onChange = {this.ownerCarChange}  options={this.state.ownerCarOption} style = {{width: "400px"}}   placeholder="选择自有车型" />
                         </span>
                         <span className={styles["jp-car"]}>竞品车型：</span>
                         <span>
-                            <Cascader  value={this.state.competitorCar}  options={this.state.competitorCarOption} onChange = {this.competitorCarChange} style = {{width: "400px"}} placeholder="选择竞品车型" />
+                            <Cascader  value={this.state.selectCompetitorCar}  options={this.state.competitorCarOption} onChange = {this.competitorCarChange} style = {{width: "400px"}} placeholder="选择竞品车型" />
                         </span>
-                        <span style={{marginLeft:'50px'}}> <Button type="primary"  icon="line-chart" onClick={() => {this.renderIndexChart()}}>分析</Button></span>
+                        <span style={{marginLeft:'50px'}}> <Button type="primary"  icon="line-chart" onClick={() => {this._initDataAndChart()}}>分析</Button></span>
                     </div>
                     <Divider>
                         口碑详细对比
