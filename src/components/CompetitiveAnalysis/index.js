@@ -58,15 +58,9 @@ export default class CompetitiveAnalysis extends PureComponent {
         this.tagObjList = [];
 
         this.tagBarProps = {
-            subTags : [], //二三级指标名称
-            owner: {
-                pCommentCount: [], // 各指标正面反馈的统计数
-                mCommentCount: [], // 各指标负面反馈的统计数
-            },
-            competitor: {
-                pCommentCount: [], // 各指标正面反馈的统计数
-                mCommentCount: [], // 各指标负面反馈的统计数
-            },
+            subTags : [], // 二三级指标名称
+            ownerCount: [], // 自有车型反馈统计
+            competitorCount: [], // 竞品车型反馈统计
         }
 
     }
@@ -88,7 +82,7 @@ export default class CompetitiveAnalysis extends PureComponent {
        this.randomComment(this.state.indexDatasFeedbacks);
    }
 
-    componentDidMount () {
+    async componentDidMount () {
         let _self = this;
 
         this.setState({
@@ -98,14 +92,16 @@ export default class CompetitiveAnalysis extends PureComponent {
             subIndexList: treeData.children[0]["children"],
         });
         // 查询默认的车型的第一个一级指标的数据
+        await this.queryTagCommentCount();
 
-        setTimeout(function (){
+        setTimeout(function () {
+            // 树图
             _self.renderIndexChart();
+            // 指标雷达图
             _self.renderComprehensiveRadar();
+            // 选中一级指标的二三级指标对比柱图
             _self.renderSelectedIndexBar();
-            _self.setState({
-                spinning: false,
-            });
+            _self.setState({ spinning: false });
         },0);
     }
 
@@ -118,7 +114,9 @@ export default class CompetitiveAnalysis extends PureComponent {
       if (rep.success) {
           let data = rep.data;
           this.tagObjList = data.name;
-
+          this.tagBarProps.subTags = data.tags.map(e => e.name);
+          this.tagBarProps.ownerCount = data.values[0];
+          this.tagBarProps.competitorCount = data.values[1];
       }
     }
 
@@ -189,11 +187,10 @@ export default class CompetitiveAnalysis extends PureComponent {
         if (!this.indexBarChart) {
             this.indexBarChart = echarts.init(document.getElementById("indexBarWrap"));
         }
-        let negative = !this.plusOrMinus === 'p' ;
-        let optionData = negative ? this.indexBarOptionsNegative : this.indexBarOptionsPositive;
+
         let xAxis = {
                 type : 'category',
-                data : optionData[this.state.renderId]["xAxisData"],
+                data : this.tagBarProps.subTags,
                 axisLabel: {
                     show:  true,
                     textStyle: {
@@ -215,7 +212,7 @@ export default class CompetitiveAnalysis extends PureComponent {
             {
                 name: this.state.analysisOwnerCarName,
                 type:'bar',
-                data: optionData[this.state.renderId]["ownerData"],
+                data: this.tagBarProps.ownerCount,
                 label: {
                     normal: {
                         show: true,
@@ -238,7 +235,7 @@ export default class CompetitiveAnalysis extends PureComponent {
             {
                 name: this.state.analysisCmpCarName,
                 type:'bar',
-                data: optionData[this.state.renderId]["competitorData"],
+                data: this.tagBarProps.ownerCount,
                 label: {
                     normal: {
                         show: true,
@@ -261,6 +258,7 @@ export default class CompetitiveAnalysis extends PureComponent {
         ];
         let option = Object.assign(indexBarOption, {xAxis,series});
         this.indexBarChart.setOption(option);
+
         this.indexBarChart.on('click', (e) => {
             this.setState({
                 drawerTitle: (this.state.subIndexRenderName || this.state.renderName) + "-" + e.name  + " TOP 20",
@@ -492,8 +490,7 @@ export default class CompetitiveAnalysis extends PureComponent {
                             <RadioButton value="b">{this.state.analysisCmpCarName}</RadioButton>
                         </RadioGroup>
                     </div>
-                        <div className={styles["index-feedback"]} id="index_feedback_owner_view"/>
-
+                    <div className={styles["index-feedback"]} id="index_feedback_owner_view"/>
                 </div>
             </Spin>
         )
