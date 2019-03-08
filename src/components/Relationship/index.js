@@ -123,7 +123,7 @@ class Relationship extends PureComponent {
                     // 页面跳转
                     this.props.history.push('/performance/CompetitiveAnalysis',{query: {
                         owner: node.name,
-                        competitors: competeLinks.map(e => e.source === node.name ? e.target : e.source),
+                        competitors: competeLinks.map(e => e.source === node.name ? e.target : e.source).filter(e => e !== node.name ),
                     }});
                 }
             });

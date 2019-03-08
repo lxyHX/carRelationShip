@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react';
 import styles from './index.css';
-import { Cascader,Button,Divider,Radio,Drawer,Row, Col,Spin ,Menu,Tag} from 'antd';
+import { Cascader,Button,Divider,Radio,Drawer,Row, Col,Spin ,Menu,message} from 'antd';
 import {ownerIndexViewOption,treeData} from '../../assets/mock/ownerIndexTreeOption'
 import indexBarOption from '../../assets/mock/indexBarOption'
 import getComprehensiveScoreOption from '../../assets/mock/comprehensiveScore'
-import {queryCommentCountByTagCode,queryCarList,queryFirstLevelTag,queryCompositeScore} from '../../service/car'
-import uuid from 'uuid/v1'
-const echarts = require('echarts');
+import {queryCommentCountByTagCode,queryCarList,queryFirstLevelTag,queryCompositeScore,queryRecomContent} from '../../service/car'
+import carIcon from '../../assets/images/car.png'
+import echarts from "echarts"
+import  'echarts-wordcloud'
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -38,6 +39,9 @@ export default class CompetitiveAnalysis extends PureComponent {
             subIndexList: [],
             selectTagCode: 'G00',
             firstTagData: [],
+            allCommentContent: [],
+            showWordCloud: false,
+            wordCloudTitle: '',
         };
 
         this.plusOrMinus = 'p';
@@ -51,9 +55,12 @@ export default class CompetitiveAnalysis extends PureComponent {
 
         // 雷达图数据
         this.radarProps = {
+            firstTagList: [],
             positive: [[],[]],  // 正面评价，两组数据
             negative:[[],[]],   // 负面评价，两组数据
         }
+        // 临时存放二级三级指标的数据包括名称和ID
+        this.tagObjList = [];
     }
 
     ownerCarChange = (value) => {
@@ -69,30 +76,44 @@ export default class CompetitiveAnalysis extends PureComponent {
     };
 
    async componentWillMount () {
-       // 获取参数
-       const {owner,competitors} = this.props.location.state.query;
-       // 获取车辆信息
-       await this._queryCarList(owner,competitors);
+       // let owner,competitors;
+       // // 获取参数
+       // if (this.props.location.state && this.props.location.state.query) {
+       //     ({owner,competitors} = this.props.location.state.query);
+       // }
+
    }
 
     async componentDidMount () {
-       await this._initDataAndChart();
-       await this._queryFirstLevelTag();
+        let owner,competitors;
+        // 获取参数
+        if (this.props.location.state && this.props.location.state.query) {
+            ({owner,competitors} = this.props.location.state.query);
+        }
+        // 获取车辆信息
+        const result = await this._queryCarList(owner,competitors);
+        if (!result) return false;
+        await this._queryFirstLevelTag();
+        await this._initDataAndChart();
     }
 
     // 在第一次加载 和 点击分析按钮 根据选择车辆初始化数据和图表
    async  _initDataAndChart () {
-        // 选择车型的第一个一级指标二级三级指标的反馈统计
-        await this._queryTagCommentCount();
-        // 获取雷达图的数据
-       await this._queryCompositeScore();
-        setTimeout( () => {
+       this.setState({
+           spinning: true,
+       });
+        setTimeout( async() => {
+            // 选择车型的第一个一级指标二级三级指标的反馈统计
+            await this._queryTagCommentCount();
+            // 获取雷达图的数据
+            const self = this;
+            await this._queryCompositeScore();
             // 树图
-            this.renderIndexChart();
+            // self.renderIndexChart();
             // 指标雷达图
-            this.renderComprehensiveRadar();
+            self.renderComprehensiveRadar();
             // 选中一级指标的二三级指标对比柱图
-            this.renderSelectedIndexBar();
+            self.renderSelectedIndexBar();
             this.setState({ spinning: false });
         },0);
     }
@@ -105,22 +126,51 @@ export default class CompetitiveAnalysis extends PureComponent {
         });
         if (rep.success) {
             let data = rep.data;
-            // 默认选中值
-            this.setState({
-                ownerCarOption: data.ownerCars,
-                competitorCarOption: data.competitorCars,
-                selectOwnerCar: [ data.ownerCars[0].value, data.ownerCars[0].children[0].value, data.ownerCars[0].children[0].children[0].value],
-                selectCompetitorCar: [ data.competitorCars[0].value,data.competitorCars[0].children[0].value, data.competitorCars[0].children[0].children[0].value],
-            });
+            if (JSON.stringify(data.ownerCars) === "{}" || JSON.stringify(data.competitorCars) === "{}") {
+                message.error('未查询到车辆信息');
+                this.props.history.push('/performance/relationShip');
+                return false;
+            }
+            // 将 map结构转换成 数组结构
+            let ownerCarOption = convertMapToArray (data.ownerCars);
+            let competitorCarOption = convertMapToArray (data.competitorCars);
 
+            const selectOwnerCar = [ ownerCarOption[0].value, ownerCarOption[0].children[0].value, ownerCarOption[0].children[0].children[0].value];
+            const selectCompetitorCar =  [ competitorCarOption[0].value,competitorCarOption[0].children[0].value, competitorCarOption[0].children[0].children[0].value];
+            // 默认选中值
+           await this.setState({
+                ownerCarOption: ownerCarOption,
+                competitorCarOption: competitorCarOption,
+                selectOwnerCar: selectOwnerCar,
+                selectCompetitorCar: selectCompetitorCar,
+            });
+           return true
+        }
+
+        function convertMapToArray (treeData) {
+            let options = [];
+            for (let key in treeData) {
+                let value = treeData[key];
+                let node = {};
+                node.label = key;
+                node.value = key;
+                if (value instanceof Object && !(value instanceof Array)) {
+                    node.children = convertMapToArray(value);
+                } else {
+                    node.children = value
+                }
+                options.push(node);
+            }
+            return options;
         }
     }
 
     // 获取二级三级指标的反馈统计
     async _queryTagCommentCount () {
       const rep = await queryCommentCountByTagCode({
-           carId: this._getCarIdByCarName(this.state.selectOwnerCar,true),
-           code: this.state.selectTagCode,
+           ownerCarId: this._getCarIdByCarName(this.state.selectOwnerCar,true),
+           competitorCarId: this._getCarIdByCarName(this.state.selectCompetitorCar,false),
+           code: this.state.tagMenuSelected[0],
            positive: this.plusOrMinus === 'p',
        });
       if (rep.success) {
@@ -136,7 +186,7 @@ export default class CompetitiveAnalysis extends PureComponent {
     async _queryFirstLevelTag () {
         const rep = await queryFirstLevelTag();
         if (rep.success) {
-            let data = rep.data;
+            let data = rep.data.filter(e => e.id !== 'G00');
             this.setState({
                 firstTagData: data,
                 tagMenuSelected: [data[0].id],
@@ -151,10 +201,28 @@ export default class CompetitiveAnalysis extends PureComponent {
             competitorCarId: this._getCarIdByCarName(this.state.selectCompetitorCar,false),
         });
         if (rep.success) {
-            let {positive,negative} = rep.data;
+            let {positive,negative,tagIndicator} = rep.data;
+            this.radarProps.firstTagList = tagIndicator.map(e =>  ({...e,max:100}));
             this.radarProps.positive = positive;
             this.radarProps.negative = negative;
         }
+    }
+
+    // 获取用户的评论详情
+    async _queryRecomContent (carId ,code) {
+        const rep = await queryRecomContent({
+            carId: carId,
+            code: code,
+            positive: this.plusOrMinus === 'p',
+        });
+        if (rep.success) {
+            this.setState({
+                allCommentContent: rep.data,
+            })
+        } else {
+            message.error("查询反馈信息内容失败！")
+        }
+
     }
 
     // 通过车辆选择信息查询车辆Id ['传奇GS5','2019款','2.0T 精英型']
@@ -186,38 +254,6 @@ export default class CompetitiveAnalysis extends PureComponent {
         });
     }
 
-    // 指标分析图-自有车型
-    renderOwnerIndexChart = () => {
-        let option = this.state.ownerIndexViewOption;
-        if (this.state.selectOwnerCar.length > 0) {
-            option.title.text = this.state.analysisOwnerCarName;
-        }
-        if (!this.myChart) {
-            this.myChart = echarts.init(document.getElementById('index_feedback_owner_view'));
-        }
-        this.myChart.setOption(option);
-        let _self = this;
-        setTimeout(function (){
-            window.onresize = function () {
-                _self.chartResize();
-            }
-        },200);
-        this.myChart.on('click', function (params) {
-            _self.nodeClickHandler(params);
-        });
-    };
-
-    // 指标分析图-竞品车型
-    renderCompetitorIndexChart = () => {
-        let option = this.state.competitorIndexViewOption;
-        if (this.state.selectCompetitorCar.length > 0) {
-            option.title.text = this.state.analysisCmpCarName;
-        }
-        if (!this.myChart) {
-            this.myChart = echarts.init(document.getElementById('index_feedback_competitor_view'));
-        }
-        this.myChart.setOption(option);
-    };
 
     _renderPositiveRadar () {
         if (!this.ownerRadar) {
@@ -225,11 +261,11 @@ export default class CompetitiveAnalysis extends PureComponent {
         }
         let option = getComprehensiveScoreOption();
         option.title.text = "正面口碑综合评分";
-        option.radar.indicator = this.state.firstTagData;
+        option.radar.indicator = this.radarProps.firstTagList;
         option.series[0].data[0].name = this.state.analysisOwnerCarName;
-        // option.series[0].data[0].value = this.radarProps.positive[0];
+        option.series[0].data[0].value = this.radarProps.positive[0];
         option.series[0].data[1].name = this.state.analysisCmpCarName;
-        // option.series[0].data[1].value = this.radarProps.positive[1];
+        option.series[0].data[1].value = this.radarProps.positive[1];
 
         this.ownerRadar.setOption(option);
     }
@@ -240,7 +276,7 @@ export default class CompetitiveAnalysis extends PureComponent {
         }
         let option = getComprehensiveScoreOption();
         option.title.text = "负面口碑综合评分";
-        option.radar.indicator = this.state.firstTagData;
+        option.radar.indicator = this.radarProps.firstTagList;
         option.series[0].data[0].name = this.state.analysisCmpCarName;
         option.series[0].data[0].value = this.radarProps.negative[0];
         option.series[0].data[1].name = this.state.analysisCmpCarName;
@@ -249,10 +285,12 @@ export default class CompetitiveAnalysis extends PureComponent {
         this.competitorRadar.setOption(option);
     }
 
-
     renderSelectedIndexBar () {
         if (!this.indexBarChart) {
             this.indexBarChart = echarts.init(document.getElementById("indexBarWrap"));
+            this.indexBarChart.on('click', (e) => {
+                this._tagBarClickHandle(e);
+            });
         }
 
         let xAxis = {
@@ -262,6 +300,12 @@ export default class CompetitiveAnalysis extends PureComponent {
                     show:  true,
                     textStyle: {
                         color: '#666',
+                    },
+                    formatter: (value, index) => {
+                        if (value.length > 3) {
+                            return value.substring(0,3) + '...'
+                        }
+                        return value
                     },
                 },
                 axisLine: {
@@ -326,11 +370,73 @@ export default class CompetitiveAnalysis extends PureComponent {
         let option = Object.assign(indexBarOption, {xAxis,series});
         this.indexBarChart.setOption(option);
 
-        this.indexBarChart.on('click', (e) => {
-            this.setState({
-                drawerTitle: (this.state.subIndexRenderName || this.state.renderName) + "-" + e.name  + " TOP 20",
-            });
-            this.showDrawer();
+
+    }
+
+    // 渲染词云
+    _renderWordCloud () {
+       let maskImage = new Image();
+       maskImage.src = carIcon;
+        const wordCloudOption = {
+            series: [{
+                type: 'wordCloud',
+                left: 'center',
+                top: 'center',
+                width: '70%',
+                height: '80%',
+                right: null,
+                bottom: null,
+                sizeRange: [12, 25],
+                rotationRange: [-90, 90],
+                gridSize: 8,
+                // set to true to allow word being draw partly outside of the canvas.
+                // Allow word bigger than the size of the canvas to be drawn
+                drawOutOfBound: false,
+                // Global text style
+                textStyle: {
+                    normal: {
+                        fontFamily: 'sans-serif',
+                        fontWeight: 'bold',
+                        // Color can be a callback function or a color string
+                        color: function () {
+                            // Random color
+                            return 'rgb(' + [
+                                Math.round(50 + Math.random() * 205),
+                                Math.round(50 + Math.random() * 205),
+                                Math.round(50 + Math.random() * 205),
+                            ].join(',') + ')';
+                        },
+                    },
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowColor: '#333',
+                    },
+                },
+                // Data is an array. Each array item must have name and value property.
+                data: this.state.allCommentContent,
+            }]};
+        if (!this.wordCloudChart) this.wordCloudChart = echarts.init(document.getElementById('world_cloud_container'));
+        maskImage.onload = () => {
+            this.wordCloudChart.setOption(wordCloudOption);
+        };
+    }
+
+   async  _tagBarClickHandle(e) {
+        // 计算一级指标的名称
+        let firstTagName = this.state.firstTagData.filter(e => e.id === this.state.tagMenuSelected[0])[0]['name'];
+        this.setState({
+            drawerTitle: firstTagName + "-" + e.name  + " TOP 20",
+        });
+        let {seriesIndex,name} = e;
+        let carId = this._getCarIdByCarName(seriesIndex === 0 ? this.state.selectOwnerCar : this.state.selectCompetitorCar, seriesIndex === 0);
+        let code = this.tagObjList.filter(_e => _e.name === name)[0].code;
+        // 请求反馈内容详细信息
+        await  this._queryRecomContent(carId,code);
+        this.setState({
+            showWordCloud: true,
+            wordCloudTitle: name,
+        },() => {
+            this._renderWordCloud();
         });
     }
 
@@ -348,16 +454,6 @@ export default class CompetitiveAnalysis extends PureComponent {
     };
 
 
-
-    renderIndexChart = () => {
-        this.setState({
-            analysisOwnerCarName: this.state.selectOwnerCar.length > 0 ? this.state.selectOwnerCar.reduce((a,b) => a + "/" + b) : '',
-            analysisCmpCarName: this.state.selectCompetitorCar.length > 0 ? this.state.selectCompetitorCar.reduce((a,b) => a + "/" + b) : '',
-        });
-      this.renderOwnerIndexChart();
-      // this.renderCompetitorIndexChart();
-    };
-
     // 渲染 正负面雷达图
     renderComprehensiveRadar = () => {
         this._renderPositiveRadar();
@@ -368,29 +464,15 @@ export default class CompetitiveAnalysis extends PureComponent {
         if (this.selectTagCode !== key) {
             this.setState({
                 tagMenuSelected: [key],
+            },async () => {
+                this.selectTagCode = key;
+                await this._queryTagCommentCount();
+                this.renderSelectedIndexBar()
             });
-            this.selectTagCode = key;
-            await this._queryTagCommentCount();
-            this.renderSelectedIndexBar()
+
         }
     };
 
-    clickTagHandle = (tagId,tagName) => {
-        if (this.state.selectLv2Index !== tagId) {
-            this.setState({
-                    selectLv2Index: tagId,
-                    renderId: tagId,
-                    subIndexRenderName: tagName,
-                },this.renderSelectedIndexBar);
-        } else {
-            this.setState({
-                selectLv2Index: '',
-                renderId: this.state.selectLv1Index,
-                subIndexRenderName: "",
-            },this.renderSelectedIndexBar);
-        }
-
-    }
 
     getDetailContrastDom() {
 
@@ -398,19 +480,19 @@ export default class CompetitiveAnalysis extends PureComponent {
             <Row className={styles.contrastRow + " " + styles.contrastTitle} >
                 <Col span={4}/>
                 <Col span={10}><span style={{padding: " 0 10px", marginRight:"10px", backgroundColor:"#3FA7DC"}}/>
-                    {this.state.analysisOwnerCarName}
+                    {this.state.selectOwnerCar.length > 0 ? this.state.selectOwnerCar.reduce((a,b) => (a +  "/" + b)) : ''}
                 </Col>
                 <Col span={10}><span  style={{padding: "0 10px", marginRight:"10px", backgroundColor:"#7091C4"}}/>
-                    {this.state.analysisCmpCarName}
+                    {this.state.selectCompetitorCar.length > 0 ? this.state.selectCompetitorCar.reduce((a,b) => (a +  "/" + b)) : ''}
                 </Col>
             </Row>
+            {/*<Row className={styles.contrastRow}>*/}
+                {/*<Col span={4} className={styles["contrast-col-title"]}>售价</Col>*/}
+                {/*<Col span={10}>10.98万元</Col>*/}
+                {/*<Col span={10}>11.98万元</Col>*/}
+            {/*</Row>*/}
             <Row className={styles.contrastRow}>
-                <Col span={4} className={styles["contrast-col-title"]}>售价</Col>
-                <Col span={10}>10.98万元</Col>
-                <Col span={10}>11.98万元</Col>
-            </Row>
-            <Row className={styles.contrastRow}>
-                <Col span={4} className={styles["contrast-col-title"]}>综合评分</Col>
+                <Col span={4} className={styles["contrast-col-title"]}>指标热度</Col>
                 <Col span={10}>
                     <div className={styles.comprehensiveRadarWrap} id="comprehensiveRadarWrapOwner"/>
                     {/*<p>综合评分: 4.6</p>*/}
@@ -440,10 +522,6 @@ export default class CompetitiveAnalysis extends PureComponent {
         </div>)
     }
 
-
-
-
-
      toggleIndexType = async (e) => {
         if (e.target.value === 'b') {
             this.plusOrMinus = 'm';
@@ -454,23 +532,8 @@ export default class CompetitiveAnalysis extends PureComponent {
         this.renderSelectedIndexBar();
     };
 
-    commentCarChange = (e) => {
-        let value = e.target.value;
-        if (value === "a") {
-            this.renderOwnerIndexChart();
-        } else {
-            this.renderCompetitorIndexChart();
-        }
-    };
 
     render() {
-        const top20Contents = (() => {
-            let ele = [];
-            for (let i = 0; i < 20; i++) {
-                ele.push(<p>{i}. Some contents...</p>);
-            }
-            return ele
-        })();
         return (
             <Spin spinning={this.state.spinning}>
                 <div className={styles["main-wrap"]} id="analysisWrap">
@@ -490,26 +553,10 @@ export default class CompetitiveAnalysis extends PureComponent {
                         口碑详细对比
                     </Divider>
                     { this.getDetailContrastDom()}
-                    <Drawer
-                        title={this.state.drawerTitle}
-                        placement="right"
-                        closable={true}
-                        width={500}
-                        onClose={this.onDrawerClose}
-                        visible={this.state.drawerVisible}
-                    >
-                        {top20Contents}
-                    </Drawer>
-
-                    {/*<h3 className={styles["h2"]}>汽车指标用户反馈分析</h3>*/}
-                    <Divider>口碑分析图</Divider>
-                    <div style={{display: 'flex', justifyContent: 'center', marginBottom: '20px'}}>
-                        <RadioGroup defaultValue="a" style={{marginLeft: "10px"}}  onChange={this.commentCarChange} >
-                            <RadioButton value="a">{this.state.analysisOwnerCarName}</RadioButton>
-                            <RadioButton value="b">{this.state.analysisCmpCarName}</RadioButton>
-                        </RadioGroup>
+                    <div style={{display: this.state.showWordCloud ? 'block': 'none'}}>
+                        <Divider>评价内容 - {this.state.wordCloudTitle}</Divider>
+                        <div className={styles["index-feedback"]} id="world_cloud_container"/>
                     </div>
-                    <div className={styles["index-feedback"]} id="index_feedback_owner_view"/>
                 </div>
             </Spin>
         )
