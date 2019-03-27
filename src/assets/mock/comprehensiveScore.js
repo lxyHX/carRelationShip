@@ -1,11 +1,11 @@
-const echarts = require('echarts');
+import seriesColor from '../../components/common/seriesColor'
 let getOption = () => ({
     title: {
         text: '基础雷达图',
         left: 'center',
-        bottom: 0,
+        top: 0,
         textStyle: {
-            fontSize: 13,
+            fontSize: 15,
             color: "#666"
         }
     },
@@ -23,11 +23,15 @@ let getOption = () => ({
     indicator: [],
   },
   series: [{
+        name: "",
     type: 'radar',
     data : [
         {
-          lineStyle: {color: "rgb(63, 167, 220)"},
+          lineStyle: {color: seriesColor[0]},
           label: {normal: {color:"rgb(63, 167, 220)"}},
+            itemStyle : {
+                borderColor :  seriesColor[0],
+            },
           value : [
                 parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
                 parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
@@ -49,13 +53,16 @@ let getOption = () => ({
           areaStyle: {
               normal: {
                   opacity: 0.6,
-                  color: "rgba(63, 167, 220,0.5)"
+                  color: "rgba(255, 0, 0,0.5)"
               }
           }
         },
         {
-            lineStyle: {color: "rgb(112, 145, 196)"},
+            lineStyle: {color: seriesColor[1]},
             label: {normal: {color:"rgb(112, 145, 196)"}},
+            itemStyle : {
+                borderColor :  seriesColor[1],
+            },
             value : [
                 parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),
                 parseFloat(((Math.random()* 0.5 + 0.5) * 5).toFixed(1)),

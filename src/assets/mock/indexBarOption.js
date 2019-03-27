@@ -1,4 +1,4 @@
-
+import seriesColor from '../../components/common/seriesColor'
 let option = {
     tooltip : {
         trigger: 'axis',
@@ -9,7 +9,7 @@ let option = {
     seriesLabel: true,
     barWidth: 12,
     xWidth: 55,
-    color: ['#3FA7DC', '#7091C4', '#5170A2'],
+    color: seriesColor,
     grid: {
         top: 20,
         bottom: 10,

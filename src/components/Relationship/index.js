@@ -8,8 +8,8 @@ let chartOption = {
     "title": [
         {
             "text": "\u6c7d\u8f66\u7ade\u4e89\u5173\u7cfb\u56fe",
-            "left": "auto",
-            "top": "auto",
+            "left": "10",
+            "top": "10",
             "textStyle": {
                 "fontSize": 18,
                 color: "#FFF"},
@@ -54,6 +54,7 @@ let chartOption = {
             "label": {
                 "normal": {
                     "show": true,
+                    color: "rgba(255,255,255,.8)",
                     "position": "right",
                     "textStyle": {
                         "fontSize": 12}},
@@ -87,10 +88,13 @@ let chartOption = {
     "legend": [
         {
             "data":[],
+            selected: {
+                "未知": false,
+            },
             "selectedMode": "multiple",
             "show": true,
             "left": "center",
-            "top": "top",
+            "bottom": "10",
             "orient": "horizontal",
             "textStyle": {
                 "fontSize": 12,
@@ -100,11 +104,16 @@ let chartOption = {
     ],
     "animation": true,
     "color":  ['#18ddd4', '#4185f7', '#62abe1', '#f1e871',  '#eeeeee'],
+    // "color":  ['rgba(255,255,255,.6)'],
 };
+
+
 
 class Relationship extends PureComponent {
     constructor(props) {
         super(props);
+        this.state =  {fullScreen : false}
+
     }
 
     componentDidMount () {
@@ -134,8 +143,34 @@ class Relationship extends PureComponent {
         },200);
     }
 
+    _fullScreen = ()=>{
+        const el = document.getElementById("fullScreenButton");
+        if(!this.state.fullScreen){//进入全屏,多重短路表达式
+            (el.requestFullscreen&&el.requestFullscreen())||
+            (el.mozRequestFullScreen&&el.mozRequestFullScreen())||
+            (el.webkitRequestFullscreen&&el.webkitRequestFullscreen())||(el.msRequestFullscreen&&el.msRequestFullscreen());
+            this.setState({
+                fullScreen: true,
+            })
+        }else{	//退出全屏,三目运算符
+            document.exitFullscreen?document.exitFullscreen():
+                document.mozCancelFullScreen?document.mozCancelFullScreen():
+                    document.webkitExitFullscreen?document.webkitExitFullscreen():'';
+            this.setState({
+                fullScreen: false,
+            })
+        }
+    };
+
+    toggleFullScreen = () =>{
+        this._fullScreen();
+    };
+
     render () {
-        return (<div className={style.relationShipWrap} id="relationshipContainer" />)
+        let fullscreenIcon = !this.state.fullScreen ? style["enter_fullscreen"] : style["exit_fullscreen"];
+        return (<div id="fullScreenButton" >
+            <span onClick={this.toggleFullScreen.bind(this)} className={style["fullScreen"] + " " + fullscreenIcon}/><div className={style.relationShipWrap} id="relationshipContainer" />
+        </div>)
     }
 }
 

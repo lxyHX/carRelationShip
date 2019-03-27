@@ -315,3 +315,7 @@ export function queryCompositeScore (option) {
 export function queryRecomContent(options) {
   return requestJSON(apiPrefix + '/queryRecomContent', { method: 'POST',body: options},false)
 }
+
+export function queryTop10FirstLevelTag(options) {
+  return requestJSON(apiPrefix + '/queryTop10FirstLevelTag', { method: 'POST',body: options},false)
+}

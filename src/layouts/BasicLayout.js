@@ -76,9 +76,9 @@ class BasicLayout extends React.PureComponent {
   getPageTitle () {
     const {routerData, location} = this.props
     const {pathname} = location
-    let title = 'DataView'
+    let title = '广汽用户洞察系统';
     if (routerData[pathname] && routerData[pathname].name) {
-      title = `${routerData[pathname].name} - DataView'`
+      title = `${routerData[pathname].name} `
     }
     return title
   }
@@ -108,26 +108,28 @@ class BasicLayout extends React.PureComponent {
 
     const layout = (
       <Layout>
-        <SiderMenu
-          collapsed={collapsed}
-          location={location}
-          onCollapse={this.handleMenuCollapse}
-        />
+        {/*<SiderMenu*/}
+          {/*collapsed={collapsed}*/}
+          {/*location={location}*/}
+          {/*onCollapse={this.handleMenuCollapse}*/}
+        {/*/>*/}
         <Layout>
-          <GlobalHeader
-            logo={logo}
-            currentUser={currentUser}
-            fetchingNotices={fetchingNotices}
-            notices={notices}
-            collapsed={collapsed}
-            title={projectTitle}
-            onNoticeClear={this.handleNoticeClear}
-            onCollapse={this.handleMenuCollapse}
-            onMenuClick={this.handleMenuClick}
-            onNoticeVisibleChange={this.handleNoticeVisibleChange}
-          />
-          <Content style={{margin: '24px 24px 0', height: '100%'}}>
-            <div style={{minHeight: 'calc(100vh - 100px)'}}>
+          {/*<GlobalHeader*/}
+            {/*logo={logo}*/}
+            {/*currentUser={currentUser}*/}
+            {/*fetchingNotices={fetchingNotices}*/}
+            {/*notices={notices}*/}
+            {/*collapsed={collapsed}*/}
+            {/*title={projectTitle}*/}
+            {/*onNoticeClear={this.handleNoticeClear}*/}
+            {/*onCollapse={this.handleMenuCollapse}*/}
+            {/*onMenuClick={this.handleMenuClick}*/}
+            {/*onNoticeVisibleChange={this.handleNoticeVisibleChange}*/}
+          {/*/>*/}
+          {/*<Content style={{margin: '24px 24px 0', height: '100%'}}>*/}
+          <Content style={{margin: '0', height: '100%'}}>
+            {/*<div style={{minHeight: 'calc(100vh - 100px)'}}>*/}
+            <div style={{minHeight: 'calc(100vh )'}}>
               <Switch>
                 {
                   getRoutes(match.path, routerData).map(item =>

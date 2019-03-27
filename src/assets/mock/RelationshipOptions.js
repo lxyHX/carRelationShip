@@ -1,3 +1,5 @@
+const lightColor = "#ec4326";
+const labelColor = 'rgba(255,255,255,.4)';
 let data = [
     {
         "name": "\u6c49\u5170\u8fbe",
@@ -145,10 +147,10 @@ let data = [
         "category": "\u5408\u8d44"
     },
     {
-        "name": "\u4f20\u797aGS8",
+        "name": "传祺GS8",
         "symbolSize": 40,
         "draggable": "True",
-        "category": "\u4f20\u797a"
+        "category": "传祺"
     },
     {
         "name": "\u8f69\u6717",
@@ -351,10 +353,13 @@ let data = [
         "category": "\u672a\u77e5"
     },
     {
-        "name": "\u4f20\u797aGA6",
+        "name": "传祺GA6",
         "symbolSize": 40,
         "draggable": "True",
-        "category": "\u4f20\u797a"
+        "category": "传祺",
+        itemStyle: {
+            color: lightColor
+        },
     },
     {
         "name": "\u957f\u5b89\u8de8\u8d8a\u65b0\u80fd\u6e90V3",
@@ -412,10 +417,10 @@ let data = [
         "category": "\u672a\u77e5"
     },
     {
-        "name": "\u4f20\u797aGM6",
+        "name": "传祺GM6",
         "symbolSize": 40,
         "draggable": "True",
-        "category": "\u4f20\u797a"
+        "category": "传祺"
     },
     {
         "name": "\u8499\u6d3e\u514bE",
@@ -473,10 +478,10 @@ let data = [
         "category": "\u81ea\u4e3b"
     },
     {
-        "name": "\u4f20\u797aGS5 Super",
+        "name": "传祺GS5 Super",
         "symbolSize": 40,
         "draggable": "True",
-        "category": "\u4f20\u797a"
+        "category": "传祺"
     },
     {
         "name": "\u4e94\u83f1\u5b8f\u5149S",
@@ -519,10 +524,10 @@ let data = [
         "category": "\u81ea\u4e3b"
     },
     {
-        "name": "\u4f20\u797aGA3",
+        "name": "传祺GA3",
         "symbolSize": 40,
         "draggable": "True",
-        "category": "\u4f20\u797a"
+        "category": "传祺"
     },
     {
         "name": "\u4e1c\u5357DX7",
@@ -725,10 +730,10 @@ let data = [
         "category": "\u81ea\u4e3b"
     },
     {
-        "name": "\u4f20\u797aGA5",
+        "name": "传祺GA5",
         "symbolSize": 40,
         "draggable": "True",
-        "category": "\u4f20\u797a"
+        "category": "传祺"
     },
     {
         "name": "\u5965\u8feaA6L",
@@ -821,10 +826,10 @@ let data = [
         "category": "\u81ea\u4e3b"
     },
     {
-        "name": "\u4f20\u797aGS4 PHEV",
+        "name": "传祺GS4 PHEV",
         "symbolSize": 40,
         "draggable": "True",
-        "category": "\u4f20\u797a"
+        "category": "传祺"
     },
     {
         "name": "\u98de\u5ea6",
@@ -992,10 +997,10 @@ let data = [
         "category": "\u5408\u8d44"
     },
     {
-        "name": "\u4f20\u797aGA8",
+        "name": "传祺GA8",
         "symbolSize": 40,
         "draggable": "True",
-        "category": "\u4f20\u797a"
+        "category": "传祺"
     },
     {
         "name": "\u9886\u514b01",
@@ -1168,10 +1173,10 @@ let data = [
         "category": "\u672a\u77e5"
     },
     {
-        "name": "\u4f20\u797aGA3S \u89c6\u754c",
+        "name": "传祺GA3S \u89c6\u754c",
         "symbolSize": 40,
         "draggable": "True",
-        "category": "\u4f20\u797a"
+        "category": "传祺"
     },
     {
         "name": "\u6bd4\u4e9a\u8feae6",
@@ -1264,10 +1269,10 @@ let data = [
         "category": "\u8fdb\u53e3"
     },
     {
-        "name": "\u4f20\u797aGS3",
+        "name": "传祺GS3",
         "symbolSize": 40,
         "draggable": "True",
-        "category": "\u4f20\u797a"
+        "category": "传祺"
     },
     {
         "name": "\u6797\u80afMKC",
@@ -1325,11 +1330,15 @@ let data = [
         "category": "\u81ea\u4e3b"
     },
     {
-        "name": "\u4f20\u797aGS4",
+        "name": "传祺GS4",
         "symbolSize": 40,
         "draggable": "True",
-        "category": "\u4f20\u797a"
-    },
+        "category": "传祺",
+        itemStyle: {
+            color: lightColor
+        },
+    }
+    ,
     {
         "name": "\u5229\u4e9a\u7eb3",
         "symbolSize": 15,
@@ -1401,10 +1410,10 @@ let data = [
         "category": "\u81ea\u4e3b"
     },
     {
-        "name": "\u4f20\u797aGA3S PHEV",
+        "name": "传祺GA3S PHEV",
         "symbolSize": 40,
         "draggable": "True",
-        "category": "\u4f20\u797a"
+        "category": "传祺"
     },
     {
         "name": "DS 6",
@@ -1422,10 +1431,13 @@ let data = [
         "category": "\u81ea\u4e3b"
     },
     {
-        "name": "\u4f20\u797aGS5",
+        "name": "传祺GS5",
         "symbolSize": 40,
         "draggable": "True",
-        "category": "\u4f20\u797a"
+        "category": "传祺",
+        itemStyle: {
+            color: lightColor
+        },
     },
     {
         "name": "\u5b8bMAX",
@@ -1523,10 +1535,10 @@ let data = [
         "category": "\u5408\u8d44"
     },
     {
-        "name": "\u4f20\u797aGS7",
+        "name": "传祺GS7",
         "symbolSize": 40,
         "draggable": "True",
-        "category": "\u4f20\u797a"
+        "category": "传祺"
     },
     {
         "name": "\u6c5f\u6deeiEV6S",
@@ -1624,10 +1636,13 @@ let data = [
         "category": "\u5408\u8d44"
     },
     {
-        "name": "\u4f20\u797aGA4",
+        "name": "传祺GA4",
         "symbolSize": 40,
         "draggable": "True",
-        "category": "\u4f20\u797a"
+        "category": "传祺",
+        itemStyle: {
+            color: lightColor
+        },
     },
     {
         "name": "\u9038\u52a8PHEV",
@@ -1675,10 +1690,10 @@ let data = [
         "category": "\u5408\u8d44"
     },
     {
-        "name": "\u4f20\u797aGM8",
+        "name": "传祺GM8",
         "symbolSize": 40,
         "draggable": "True",
-        "category": "\u4f20\u797a"
+        "category": "传祺"
     },
     {
         "name": "\u8d77\u4e9aKX CROSS",
@@ -1716,10 +1731,10 @@ let data = [
         "category": "\u81ea\u4e3b"
     },
     {
-        "name": "\u4f20\u797aGE3",
+        "name": "传祺GE3",
         "symbolSize": 40,
         "draggable": "True",
-        "category": "\u4f20\u797a"
+        "category": "传祺"
     },
     {
         "name": "\u667a\u8dd1",
@@ -1825,27 +1840,27 @@ let data = [
 
 let links = [
     {
-        "source": "\u4f20\u797aGS4",
-        "target": "\u4f20\u797aGS4"
+        "source": "传祺GS4",
+        "target": "传祺GS4"
     },
     {
         "source": "\u535a\u8d8a",
-        "target": "\u4f20\u797aGS4"
+        "target": "传祺GS4"
     },
     {
         "source": "\u957f\u5b89CS55",
-        "target": "\u4f20\u797aGS4"
+        "target": "传祺GS4"
     },
     {
         "source": "\u8363\u5a01RX5",
-        "target": "\u4f20\u797aGS4"
+        "target": "传祺GS4"
     },
     {
         "source": "\u957f\u5b89CS75",
-        "target": "\u4f20\u797aGS4"
+        "target": "传祺GS4"
     },
     {
-        "source": "\u4f20\u797aGS4",
+        "source": "传祺GS4",
         "target": "\u535a\u8d8a"
     },
     {
@@ -1865,7 +1880,7 @@ let links = [
         "target": "\u535a\u8d8a"
     },
     {
-        "source": "\u4f20\u797aGS4",
+        "source": "传祺GS4",
         "target": "\u957f\u5b89CS55"
     },
     {
@@ -1905,7 +1920,7 @@ let links = [
         "target": "\u8363\u5a01RX5"
     },
     {
-        "source": "\u4f20\u797aGS4",
+        "source": "传祺GS4",
         "target": "\u957f\u5b89CS75"
     },
     {
@@ -2245,27 +2260,27 @@ let links = [
         "target": "\u6b27\u84dd\u5fb7"
     },
     {
-        "source": "\u4f20\u797aGS4 PHEV",
-        "target": "\u4f20\u797aGS4 PHEV"
+        "source": "传祺GS4 PHEV",
+        "target": "传祺GS4 PHEV"
     },
     {
-        "source": "\u4f20\u797aGS4",
-        "target": "\u4f20\u797aGS4 PHEV"
+        "source": "传祺GS4",
+        "target": "传祺GS4 PHEV"
     },
     {
         "source": "\u5b8bDM",
-        "target": "\u4f20\u797aGS4 PHEV"
+        "target": "传祺GS4 PHEV"
     },
     {
         "source": "\u957f\u5b89CS75 PHEV",
-        "target": "\u4f20\u797aGS4 PHEV"
+        "target": "传祺GS4 PHEV"
     },
     {
         "source": "\u9886\u514b01 PHEV",
-        "target": "\u4f20\u797aGS4 PHEV"
+        "target": "传祺GS4 PHEV"
     },
     {
-        "source": "\u4f20\u797aGS4 PHEV",
+        "source": "传祺GS4 PHEV",
         "target": "\u5b8bDM"
     },
     {
@@ -2285,7 +2300,7 @@ let links = [
         "target": "\u5b8bDM"
     },
     {
-        "source": "\u4f20\u797aGS4 PHEV",
+        "source": "传祺GS4 PHEV",
         "target": "\u957f\u5b89CS75 PHEV"
     },
     {
@@ -2401,7 +2416,7 @@ let links = [
         "target": "\u5510"
     },
     {
-        "source": "\u4f20\u797aGS8",
+        "source": "传祺GS8",
         "target": "\u5510"
     },
     {
@@ -2465,24 +2480,24 @@ let links = [
         "target": "\u535a\u745eGE"
     },
     {
-        "source": "\u4f20\u797aGE3",
-        "target": "\u4f20\u797aGE3"
+        "source": "传祺GE3",
+        "target": "传祺GE3"
     },
     {
         "source": "\u79e6Pro EV",
-        "target": "\u4f20\u797aGE3"
+        "target": "传祺GE3"
     },
     {
         "source": "\u5b8bEV",
-        "target": "\u4f20\u797aGE3"
+        "target": "传祺GE3"
     },
     {
         "source": "\u5143EV",
-        "target": "\u4f20\u797aGE3"
+        "target": "传祺GE3"
     },
     {
         "source": "\u5317\u6c7d\u65b0\u80fd\u6e90EX5",
-        "target": "\u4f20\u797aGE3"
+        "target": "传祺GE3"
     },
     {
         "source": "\u79e6Pro EV",
@@ -2505,7 +2520,7 @@ let links = [
         "target": "\u79e6Pro EV"
     },
     {
-        "source": "\u4f20\u797aGE3",
+        "source": "传祺GE3",
         "target": "\u5b8bEV"
     },
     {
@@ -2525,7 +2540,7 @@ let links = [
         "target": "\u5b8bEV"
     },
     {
-        "source": "\u4f20\u797aGE3",
+        "source": "传祺GE3",
         "target": "\u5143EV"
     },
     {
@@ -2545,7 +2560,7 @@ let links = [
         "target": "\u5143EV"
     },
     {
-        "source": "\u4f20\u797aGE3",
+        "source": "传祺GE3",
         "target": "\u5317\u6c7d\u65b0\u80fd\u6e90EX5"
     },
     {
@@ -2769,7 +2784,7 @@ let links = [
         "target": "\u5e1d\u8c6aGSe"
     },
     {
-        "source": "\u4f20\u797aGE3",
+        "source": "传祺GE3",
         "target": "\u5e1d\u8c6aGSe"
     },
     {
@@ -2785,7 +2800,7 @@ let links = [
         "target": "\u5e1d\u8c6aGSe"
     },
     {
-        "source": "\u4f20\u797aGE3",
+        "source": "传祺GE3",
         "target": "\u745e\u864e3xe"
     },
     {
@@ -2805,24 +2820,24 @@ let links = [
         "target": "\u745e\u864e3xe"
     },
     {
-        "source": "\u4f20\u797aGS4 PHEV",
-        "target": "\u4f20\u797aGA3S PHEV"
+        "source": "传祺GS4 PHEV",
+        "target": "传祺GA3S PHEV"
     },
     {
-        "source": "\u4f20\u797aGA3S PHEV",
-        "target": "\u4f20\u797aGA3S PHEV"
+        "source": "传祺GA3S PHEV",
+        "target": "传祺GA3S PHEV"
     },
     {
         "source": "\u540d\u72356 \u63d2\u7535\u6df7\u52a8",
-        "target": "\u4f20\u797aGA3S PHEV"
+        "target": "传祺GA3S PHEV"
     },
     {
         "source": "\u79e6Pro DM",
-        "target": "\u4f20\u797aGA3S PHEV"
+        "target": "传祺GA3S PHEV"
     },
     {
         "source": "\u535a\u745eGE PHEV",
-        "target": "\u4f20\u797aGA3S PHEV"
+        "target": "传祺GA3S PHEV"
     },
     {
         "source": "\u5b8bDM",
@@ -2985,24 +3000,24 @@ let links = [
         "target": "\u9886\u514b03"
     },
     {
-        "source": "\u4f20\u797aGS4",
-        "target": "\u4f20\u797aGS5"
+        "source": "传祺GS4",
+        "target": "传祺GS5"
     },
     {
         "source": "\u8363\u5a01RX5",
-        "target": "\u4f20\u797aGS5"
+        "target": "传祺GS5"
     },
     {
         "source": "\u957f\u5b89CS75",
-        "target": "\u4f20\u797aGS5"
+        "target": "传祺GS5"
     },
     {
         "source": "\u9886\u754c",
-        "target": "\u4f20\u797aGS5"
+        "target": "传祺GS5"
     },
     {
-        "source": "\u4f20\u797aGS5",
-        "target": "\u4f20\u797aGS5"
+        "source": "传祺GS5",
+        "target": "传祺GS5"
     },
     {
         "source": "\u6602\u79d1\u5a01",
@@ -3246,23 +3261,23 @@ let links = [
     },
     {
         "source": "\u8363\u5a01RX8",
-        "target": "\u4f20\u797aGS8"
+        "target": "传祺GS8"
     },
     {
         "source": "\u5510",
-        "target": "\u4f20\u797aGS8"
+        "target": "传祺GS8"
     },
     {
         "source": "\u957f\u5b89CS95",
-        "target": "\u4f20\u797aGS8"
+        "target": "传祺GS8"
     },
     {
         "source": "\u54c8\u5f17H9",
-        "target": "\u4f20\u797aGS8"
+        "target": "传祺GS8"
     },
     {
-        "source": "\u4f20\u797aGS8",
-        "target": "\u4f20\u797aGS8"
+        "source": "传祺GS8",
+        "target": "传祺GS8"
     },
     {
         "source": "\u8363\u5a01RX8",
@@ -3661,7 +3676,7 @@ let links = [
         "target": "\u54c8\u5f17H9"
     },
     {
-        "source": "\u4f20\u797aGS8",
+        "source": "传祺GS8",
         "target": "\u54c8\u5f17H9"
     },
     {
@@ -3685,24 +3700,24 @@ let links = [
         "target": "\u5927\u901aD90"
     },
     {
-        "source": "\u4f20\u797aGS4",
-        "target": "\u4f20\u797aGS3"
+        "source": "传祺GS4",
+        "target": "传祺GS3"
     },
     {
         "source": "\u5b9d\u9a8f510",
-        "target": "\u4f20\u797aGS3"
+        "target": "传祺GS3"
     },
     {
         "source": "\u540d\u7235ZS",
-        "target": "\u4f20\u797aGS3"
+        "target": "传祺GS3"
     },
     {
         "source": "\u54c8\u5f17H2",
-        "target": "\u4f20\u797aGS3"
+        "target": "传祺GS3"
     },
     {
-        "source": "\u4f20\u797aGS3",
-        "target": "\u4f20\u797aGS3"
+        "source": "传祺GS3",
+        "target": "传祺GS3"
     },
     {
         "source": "\u5b9d\u9a8f530",
@@ -4046,23 +4061,23 @@ let links = [
     },
     {
         "source": "\u522b\u514bGL8",
-        "target": "\u4f20\u797aGM8"
+        "target": "传祺GM8"
     },
     {
         "source": "\u827e\u529b\u7ec5",
-        "target": "\u4f20\u797aGM8"
+        "target": "传祺GM8"
     },
     {
-        "source": "\u4f20\u797aGM8",
-        "target": "\u4f20\u797aGM8"
+        "source": "传祺GM8",
+        "target": "传祺GM8"
     },
     {
-        "source": "\u4f20\u797aGM6",
-        "target": "\u4f20\u797aGM8"
+        "source": "传祺GM6",
+        "target": "传祺GM8"
     },
     {
         "source": "\u5927\u901aG10",
-        "target": "\u4f20\u797aGM8"
+        "target": "传祺GM8"
     },
     {
         "source": "\u522b\u514bGL6",
@@ -4097,7 +4112,7 @@ let links = [
         "target": "\u522b\u514bGL6"
     },
     {
-        "source": "\u4f20\u797aGM6",
+        "source": "传祺GM6",
         "target": "\u522b\u514bGL6"
     },
     {
@@ -4117,7 +4132,7 @@ let links = [
         "target": "\u5b8bMAX"
     },
     {
-        "source": "\u4f20\u797aGM6",
+        "source": "传祺GM6",
         "target": "\u5b8bMAX"
     },
     {
@@ -4126,23 +4141,23 @@ let links = [
     },
     {
         "source": "\u522b\u514bGL6",
-        "target": "\u4f20\u797aGM6"
+        "target": "传祺GM6"
     },
     {
-        "source": "\u4f20\u797aGM8",
-        "target": "\u4f20\u797aGM6"
+        "source": "传祺GM8",
+        "target": "传祺GM6"
     },
     {
         "source": "\u5b8bMAX",
-        "target": "\u4f20\u797aGM6"
+        "target": "传祺GM6"
     },
     {
-        "source": "\u4f20\u797aGM6",
-        "target": "\u4f20\u797aGM6"
+        "source": "传祺GM6",
+        "target": "传祺GM6"
     },
     {
         "source": "\u9014\u5b89L",
-        "target": "\u4f20\u797aGM6"
+        "target": "传祺GM6"
     },
     {
         "source": "\u522b\u514bGL6",
@@ -4181,7 +4196,7 @@ let links = [
         "target": "\u9014\u777f\u6b27"
     },
     {
-        "source": "\u4f20\u797aGM8",
+        "source": "传祺GM8",
         "target": "\u9014\u777f\u6b27"
     },
     {
@@ -4237,11 +4252,11 @@ let links = [
         "target": "\u827e\u529b\u7ec5"
     },
     {
-        "source": "\u4f20\u797aGM8",
+        "source": "传祺GM8",
         "target": "\u827e\u529b\u7ec5"
     },
     {
-        "source": "\u4f20\u797aGM6",
+        "source": "传祺GM6",
         "target": "\u827e\u529b\u7ec5"
     },
     {
@@ -4293,11 +4308,11 @@ let links = [
         "target": "\u5927\u901aG10"
     },
     {
-        "source": "\u4f20\u797aGM8",
+        "source": "传祺GM8",
         "target": "\u5927\u901aG10"
     },
     {
-        "source": "\u4f20\u797aGM6",
+        "source": "传祺GM6",
         "target": "\u5927\u901aG10"
     },
     {
@@ -4373,7 +4388,7 @@ let links = [
         "target": "\u5b9d\u9a8f730"
     },
     {
-        "source": "\u4f20\u797aGM6",
+        "source": "传祺GM6",
         "target": "\u5b9d\u9a8f730"
     },
     {
@@ -4406,63 +4421,63 @@ let links = [
     },
     {
         "source": "\u63a2\u754c\u8005",
-        "target": "\u4f20\u797aGS7"
+        "target": "传祺GS7"
     },
     {
-        "source": "\u4f20\u797aGS4",
-        "target": "\u4f20\u797aGS7"
+        "source": "传祺GS4",
+        "target": "传祺GS7"
     },
     {
         "source": "\u8363\u5a01RX8",
-        "target": "\u4f20\u797aGS7"
+        "target": "传祺GS7"
     },
     {
         "source": "\u5510",
-        "target": "\u4f20\u797aGS7"
+        "target": "传祺GS7"
     },
     {
-        "source": "\u4f20\u797aGS7",
-        "target": "\u4f20\u797aGS7"
+        "source": "传祺GS7",
+        "target": "传祺GS7"
     },
     {
-        "source": "\u4f20\u797aGA6",
-        "target": "\u4f20\u797aGA4"
+        "source": "传祺GA6",
+        "target": "传祺GA4"
     },
     {
         "source": "\u5e1d\u8c6aGL",
-        "target": "\u4f20\u797aGA4"
+        "target": "传祺GA4"
     },
     {
         "source": "\u827e\u745e\u6cfdGX",
-        "target": "\u4f20\u797aGA4"
+        "target": "传祺GA4"
     },
     {
-        "source": "\u4f20\u797aGA4",
-        "target": "\u4f20\u797aGA4"
+        "source": "传祺GA4",
+        "target": "传祺GA4"
     },
     {
         "source": "\u7f24\u745e",
-        "target": "\u4f20\u797aGA4"
+        "target": "传祺GA4"
     },
     {
         "source": "\u540d\u72356",
-        "target": "\u4f20\u797aGA6"
+        "target": "传祺GA6"
     },
     {
         "source": "\u6717\u9038",
-        "target": "\u4f20\u797aGA6"
+        "target": "传祺GA6"
     },
     {
-        "source": "\u4f20\u797aGA6",
-        "target": "\u4f20\u797aGA6"
+        "source": "传祺GA6",
+        "target": "传祺GA6"
     },
     {
         "source": "\u777f\u9a8bCC",
-        "target": "\u4f20\u797aGA6"
+        "target": "传祺GA6"
     },
     {
         "source": "\u535a\u745e",
-        "target": "\u4f20\u797aGA6"
+        "target": "传祺GA6"
     },
     {
         "source": "\u540d\u72356",
@@ -4846,23 +4861,23 @@ let links = [
     },
     {
         "source": "\u7ea2\u65d7H5",
-        "target": "\u4f20\u797aGA8"
+        "target": "传祺GA8"
     },
     {
         "source": "\u4e1c\u98ceA9",
-        "target": "\u4f20\u797aGA8"
+        "target": "传祺GA8"
     },
     {
         "source": "\u535a\u745e",
-        "target": "\u4f20\u797aGA8"
+        "target": "传祺GA8"
     },
     {
-        "source": "\u4f20\u797aGA8",
-        "target": "\u4f20\u797aGA8"
+        "source": "传祺GA8",
+        "target": "传祺GA8"
     },
     {
         "source": "\u5e15\u8428\u7279",
-        "target": "\u4f20\u797aGA8"
+        "target": "传祺GA8"
     },
     {
         "source": "\u541b\u5a01",
@@ -5121,7 +5136,7 @@ let links = [
         "target": "\u4e1c\u98ceA9"
     },
     {
-        "source": "\u4f20\u797aGA8",
+        "source": "传祺GA8",
         "target": "\u4e1c\u98ceA9"
     },
     {
@@ -5193,7 +5208,7 @@ let links = [
         "target": "\u6c83\u5170\u591a"
     },
     {
-        "source": "\u4f20\u797aGM6",
+        "source": "传祺GM6",
         "target": "\u6c83\u5170\u591a"
     },
     {
@@ -5386,23 +5401,23 @@ let links = [
     },
     {
         "source": "\u540d\u7235GT",
-        "target": "\u4f20\u797aGA3S \u89c6\u754c"
+        "target": "传祺GA3S \u89c6\u754c"
     },
     {
         "source": "\u667a\u9053",
-        "target": "\u4f20\u797aGA3S \u89c6\u754c"
+        "target": "传祺GA3S \u89c6\u754c"
     },
     {
         "source": "\u827e\u745e\u6cfd5",
-        "target": "\u4f20\u797aGA3S \u89c6\u754c"
+        "target": "传祺GA3S \u89c6\u754c"
     },
     {
-        "source": "\u4f20\u797aGA3S \u89c6\u754c",
-        "target": "\u4f20\u797aGA3S \u89c6\u754c"
+        "source": "传祺GA3S \u89c6\u754c",
+        "target": "传祺GA3S \u89c6\u754c"
     },
     {
         "source": "\u79d1\u6c83\u5179",
-        "target": "\u4f20\u797aGA3S \u89c6\u754c"
+        "target": "传祺GA3S \u89c6\u754c"
     },
     {
         "source": "\u540d\u7235GT",
@@ -5465,24 +5480,24 @@ let links = [
         "target": "\u5a01\u6717"
     },
     {
-        "source": "\u4f20\u797aGS4",
-        "target": "\u4f20\u797aGS5 Super"
+        "source": "传祺GS4",
+        "target": "传祺GS5 Super"
     },
     {
-        "source": "\u4f20\u797aGS5 Super",
-        "target": "\u4f20\u797aGS5 Super"
+        "source": "传祺GS5 Super",
+        "target": "传祺GS5 Super"
     },
     {
         "source": "\u8363\u5a01RX5",
-        "target": "\u4f20\u797aGS5 Super"
+        "target": "传祺GS5 Super"
     },
     {
         "source": "\u54c8\u5f17H6 Coupe",
-        "target": "\u4f20\u797aGS5 Super"
+        "target": "传祺GS5 Super"
     },
     {
         "source": "\u957f\u5b89CS75",
-        "target": "\u4f20\u797aGS5 Super"
+        "target": "传祺GS5 Super"
     },
     {
         "source": "\u54c8\u5f17H4",
@@ -5546,23 +5561,23 @@ let links = [
     },
     {
         "source": "\u4e1c\u5357DX3",
-        "target": "\u4f20\u797aGA3"
+        "target": "传祺GA3"
     },
     {
-        "source": "\u4f20\u797aGA3S \u89c6\u754c",
-        "target": "\u4f20\u797aGA3"
+        "source": "传祺GA3S \u89c6\u754c",
+        "target": "传祺GA3"
     },
     {
-        "source": "\u4f20\u797aGA3",
-        "target": "\u4f20\u797aGA3"
+        "source": "传祺GA3",
+        "target": "传祺GA3"
     },
     {
-        "source": "\u4f20\u797aGA4",
-        "target": "\u4f20\u797aGA3"
+        "source": "传祺GA4",
+        "target": "传祺GA3"
     },
     {
         "source": "\u8363\u5a01i6",
-        "target": "\u4f20\u797aGA3"
+        "target": "传祺GA3"
     },
     {
         "source": "\u4e1c\u5357DX3",
@@ -5725,24 +5740,24 @@ let links = [
         "target": "\u5a01\u9a70"
     },
     {
-        "source": "\u4f20\u797aGA6",
-        "target": "\u4f20\u797aGA5"
+        "source": "传祺GA6",
+        "target": "传祺GA5"
     },
     {
         "source": "\u51cc\u6e21",
-        "target": "\u4f20\u797aGA5"
+        "target": "传祺GA5"
     },
     {
-        "source": "\u4f20\u797aGA5",
-        "target": "\u4f20\u797aGA5"
+        "source": "传祺GA5",
+        "target": "传祺GA5"
     },
     {
         "source": "\u5947\u9a8f",
-        "target": "\u4f20\u797aGA5"
+        "target": "传祺GA5"
     },
     {
         "source": "\u54e5\u745e",
-        "target": "\u4f20\u797aGA5"
+        "target": "传祺GA5"
     },
     {
         "source": "\u6377\u8fbe",
@@ -5849,7 +5864,7 @@ let links = [
         "target": "\u963f\u5c14\u6cd5\u00b7\u7f57\u5bc6\u6b27166"
     },
     {
-        "source": "\u4f20\u797aGS5",
+        "source": "传祺GS5",
         "target": "\u963f\u5c14\u6cd5\u00b7\u7f57\u5bc6\u6b27166"
     },
     {
@@ -5873,7 +5888,7 @@ let links = [
         "target": "\u5965\u5fb7\u8d5b"
     },
     {
-        "source": "\u4f20\u797aGM8",
+        "source": "传祺GM8",
         "target": "\u5965\u5fb7\u8d5b"
     },
     {
@@ -5881,7 +5896,7 @@ let links = [
         "target": "\u5965\u5fb7\u8d5b"
     },
     {
-        "source": "\u4f20\u797aGS4 PHEV",
+        "source": "传祺GS4 PHEV",
         "target": "\u4e16\u9510PHEV"
     },
     {
@@ -5905,7 +5920,7 @@ let links = [
         "target": "\u5965\u5fb7\u8d5b(\u8fdb\u53e3)"
     },
     {
-        "source": "\u4f20\u797aGS8",
+        "source": "传祺GS8",
         "target": "\u5965\u5fb7\u8d5b(\u8fdb\u53e3)"
     },
     {
@@ -5925,7 +5940,7 @@ let links = [
         "target": "\u5954\u817eB70"
     },
     {
-        "source": "\u4f20\u797aGA6",
+        "source": "传祺GA6",
         "target": "\u5954\u817eB70"
     },
     {
@@ -5941,7 +5956,7 @@ let links = [
         "target": "\u5954\u817eB70"
     },
     {
-        "source": "\u4f20\u797aGS4",
+        "source": "传祺GS4",
         "target": "\u6bd4\u4e9a\u8feaS6"
     },
     {
@@ -5977,7 +5992,7 @@ let links = [
         "target": "\u6bd4\u4e9a\u8feaG5"
     },
     {
-        "source": "\u4f20\u797aGS5",
+        "source": "传祺GS5",
         "target": "\u6bd4\u4e9a\u8feaG5"
     },
     {
@@ -5985,7 +6000,7 @@ let links = [
         "target": "\u6bd4\u4e9a\u8feae6"
     },
     {
-        "source": "\u4f20\u797aGE3",
+        "source": "传祺GE3",
         "target": "\u6bd4\u4e9a\u8feae6"
     },
     {
@@ -6013,7 +6028,7 @@ let links = [
         "target": "\u5b8bMAX DM"
     },
     {
-        "source": "\u4f20\u797aGM6",
+        "source": "传祺GM6",
         "target": "\u5b8bMAX DM"
     },
     {
@@ -6021,7 +6036,7 @@ let links = [
         "target": "\u5b8bMAX DM"
     },
     {
-        "source": "\u4f20\u797aGS4",
+        "source": "传祺GS4",
         "target": "\u660c\u6cb3Q7"
     },
     {
@@ -6041,7 +6056,7 @@ let links = [
         "target": "\u660c\u6cb3Q7"
     },
     {
-        "source": "\u4f20\u797aGE3",
+        "source": "传祺GE3",
         "target": "\u5317\u6c7d\u65b0\u80fd\u6e90EX3"
     },
     {
@@ -6065,7 +6080,7 @@ let links = [
         "target": "\u51cc\u8f69"
     },
     {
-        "source": "\u4f20\u797aGM6",
+        "source": "传祺GM6",
         "target": "\u51cc\u8f69"
     },
     {
@@ -6085,7 +6100,7 @@ let links = [
         "target": "\u777f\u9a8b"
     },
     {
-        "source": "\u4f20\u797aGA6",
+        "source": "传祺GA6",
         "target": "\u777f\u9a8b"
     },
     {
@@ -6105,7 +6120,7 @@ let links = [
         "target": "\u957f\u5b89CS15 EV"
     },
     {
-        "source": "\u4f20\u797aGE3",
+        "source": "传祺GE3",
         "target": "\u957f\u5b89CS15 EV"
     },
     {
@@ -6121,7 +6136,7 @@ let links = [
         "target": "\u957f\u5b89CS15 EV"
     },
     {
-        "source": "\u4f20\u797aGA3S PHEV",
+        "source": "传祺GA3S PHEV",
         "target": "\u9038\u52a8PHEV"
     },
     {
@@ -6145,7 +6160,7 @@ let links = [
         "target": "\u957f\u5b89\u8de8\u8d8a\u65b0\u80fd\u6e90V5"
     },
     {
-        "source": "\u4f20\u797aGS4 PHEV",
+        "source": "传祺GS4 PHEV",
         "target": "\u957f\u5b89\u8de8\u8d8a\u65b0\u80fd\u6e90V5"
     },
     {
@@ -6173,7 +6188,7 @@ let links = [
         "target": "\u5e05\u5ba2"
     },
     {
-        "source": "\u4f20\u797aGM6",
+        "source": "传祺GM6",
         "target": "\u5e05\u5ba2"
     },
     {
@@ -6181,11 +6196,11 @@ let links = [
         "target": "\u5e05\u5ba2"
     },
     {
-        "source": "\u4f20\u797aGM8",
+        "source": "传祺GM8",
         "target": "\u5e05\u5ba2EV"
     },
     {
-        "source": "\u4f20\u797aGM6",
+        "source": "传祺GM6",
         "target": "\u5e05\u5ba2EV"
     },
     {
@@ -6205,7 +6220,7 @@ let links = [
         "target": "\u9ad8\u5c14\u592b \u63d2\u7535\u6df7\u52a8"
     },
     {
-        "source": "\u4f20\u797aGS4 PHEV",
+        "source": "传祺GS4 PHEV",
         "target": "\u9ad8\u5c14\u592b \u63d2\u7535\u6df7\u52a8"
     },
     {
@@ -6221,7 +6236,7 @@ let links = [
         "target": "\u9ad8\u5c14\u592b \u63d2\u7535\u6df7\u52a8"
     },
     {
-        "source": "\u4f20\u797aGS4 PHEV",
+        "source": "传祺GS4 PHEV",
         "target": "\u98ce\u5149580 PHEV"
     },
     {
@@ -6245,11 +6260,11 @@ let links = [
         "target": "\u98ce\u884cCM7"
     },
     {
-        "source": "\u4f20\u797aGM8",
+        "source": "传祺GM8",
         "target": "\u98ce\u884cCM7"
     },
     {
-        "source": "\u4f20\u797aGM6",
+        "source": "传祺GM6",
         "target": "\u98ce\u884cCM7"
     },
     {
@@ -6261,7 +6276,7 @@ let links = [
         "target": "\u98ce\u884cCM7"
     },
     {
-        "source": "\u4f20\u797aGM6",
+        "source": "传祺GM6",
         "target": "\u98ce\u884cF600"
     },
     {
@@ -6281,7 +6296,7 @@ let links = [
         "target": "\u98ce\u884cF600"
     },
     {
-        "source": "\u4f20\u797aGM6",
+        "source": "传祺GM6",
         "target": "\u98ce\u884cM6"
     },
     {
@@ -6313,7 +6328,7 @@ let links = [
         "target": "\u98ce\u884cM7"
     },
     {
-        "source": "\u4f20\u797aGM8",
+        "source": "传祺GM8",
         "target": "\u98ce\u884cM7"
     },
     {
@@ -6325,7 +6340,7 @@ let links = [
         "target": "\u4e1c\u5357DX3 EV"
     },
     {
-        "source": "\u4f20\u797aGE3",
+        "source": "传祺GE3",
         "target": "\u4e1c\u5357DX3 EV"
     },
     {
@@ -6353,7 +6368,7 @@ let links = [
         "target": "\u57c3\u5c14\u6cd5"
     },
     {
-        "source": "\u4f20\u797aGM8",
+        "source": "传祺GM8",
         "target": "\u57c3\u5c14\u6cd5"
     },
     {
@@ -6365,7 +6380,7 @@ let links = [
         "target": "\u54c8\u5f17H8"
     },
     {
-        "source": "\u4f20\u797aGS8",
+        "source": "传祺GS8",
         "target": "\u54c8\u5f17H8"
     },
     {
@@ -6381,7 +6396,7 @@ let links = [
         "target": "\u54c8\u5f17H8"
     },
     {
-        "source": "\u4f20\u797aGS4 PHEV",
+        "source": "传祺GS4 PHEV",
         "target": "\u6c49\u817eX7 PHEV"
     },
     {
@@ -6413,7 +6428,7 @@ let links = [
         "target": "\u6d77\u9a6cM6"
     },
     {
-        "source": "\u4f20\u797aGA4",
+        "source": "传祺GA4",
         "target": "\u6d77\u9a6cM6"
     },
     {
@@ -6433,7 +6448,7 @@ let links = [
         "target": "\u798f\u7f8e\u6765F7"
     },
     {
-        "source": "\u4f20\u797aGM6",
+        "source": "传祺GM6",
         "target": "\u798f\u7f8e\u6765F7"
     },
     {
@@ -6441,7 +6456,7 @@ let links = [
         "target": "\u798f\u7f8e\u6765F7"
     },
     {
-        "source": "\u4f20\u797aGS4",
+        "source": "传祺GS4",
         "target": "\u6d77\u9a6cS7"
     },
     {
@@ -6465,7 +6480,7 @@ let links = [
         "target": "\u534e\u98827"
     },
     {
-        "source": "\u4f20\u797aGM8",
+        "source": "传祺GM8",
         "target": "\u534e\u98827"
     },
     {
@@ -6489,7 +6504,7 @@ let links = [
         "target": "\u5409\u5229EC8"
     },
     {
-        "source": "\u4f20\u797aGA8",
+        "source": "传祺GA8",
         "target": "\u5409\u5229EC8"
     },
     {
@@ -6509,7 +6524,7 @@ let links = [
         "target": "\u5609\u9645"
     },
     {
-        "source": "\u4f20\u797aGM6",
+        "source": "传祺GM6",
         "target": "\u5609\u9645"
     },
     {
@@ -6521,7 +6536,7 @@ let links = [
         "target": "\u5609\u9645"
     },
     {
-        "source": "\u4f20\u797aGA3S PHEV",
+        "source": "传祺GA3S PHEV",
         "target": "\u5e1d\u8c6aPHEV"
     },
     {
@@ -6545,7 +6560,7 @@ let links = [
         "target": "\u4e5d\u9f99\u827e\u83f2"
     },
     {
-        "source": "\u4f20\u797aGM8",
+        "source": "传祺GM8",
         "target": "\u4e5d\u9f99\u827e\u83f2"
     },
     {
@@ -6565,7 +6580,7 @@ let links = [
         "target": "\u745e\u98ceM4"
     },
     {
-        "source": "\u4f20\u797aGM6",
+        "source": "传祺GM6",
         "target": "\u745e\u98ceM4"
     },
     {
@@ -6589,7 +6604,7 @@ let links = [
         "target": "\u745e\u98ceM5"
     },
     {
-        "source": "\u4f20\u797aGM8",
+        "source": "传祺GM8",
         "target": "\u745e\u98ceM5"
     },
     {
@@ -6613,7 +6628,7 @@ let links = [
         "target": "\u745e\u98ceM6"
     },
     {
-        "source": "\u4f20\u797aGM8",
+        "source": "传祺GM8",
         "target": "\u745e\u98ceM6"
     },
     {
@@ -6629,7 +6644,7 @@ let links = [
         "target": "\u6c5f\u6deeiEV7S"
     },
     {
-        "source": "\u4f20\u797aGE3",
+        "source": "传祺GE3",
         "target": "\u6c5f\u6deeiEV7S"
     },
     {
@@ -6653,7 +6668,7 @@ let links = [
         "target": "\u6c5f\u6deeiEV6S"
     },
     {
-        "source": "\u4f20\u797aGE3",
+        "source": "传祺GE3",
         "target": "\u6c5f\u6deeiEV6S"
     },
     {
@@ -6673,7 +6688,7 @@ let links = [
         "target": "\u9014\u777f\u6b27\u5546\u52a1\u8f66"
     },
     {
-        "source": "\u4f20\u797aGM8",
+        "source": "传祺GM8",
         "target": "\u9014\u777f\u6b27\u5546\u52a1\u8f66"
     },
     {
@@ -6697,7 +6712,7 @@ let links = [
         "target": "\u96f7\u8bfaESPACE"
     },
     {
-        "source": "\u4f20\u797aGM8",
+        "source": "传祺GM8",
         "target": "\u96f7\u8bfaESPACE"
     },
     {
@@ -6709,7 +6724,7 @@ let links = [
         "target": "\u8f69\u6717"
     },
     {
-        "source": "\u4f20\u797aGM6",
+        "source": "传祺GM6",
         "target": "\u8f69\u6717"
     },
     {
@@ -6721,7 +6736,7 @@ let links = [
         "target": "\u8f69\u6717"
     },
     {
-        "source": "\u4f20\u797aGE3",
+        "source": "传祺GE3",
         "target": "\u9886\u9014K-ONE"
     },
     {
@@ -6741,7 +6756,7 @@ let links = [
         "target": "\u9886\u9014K-ONE"
     },
     {
-        "source": "\u4f20\u797aGE3",
+        "source": "传祺GE3",
         "target": "\u5229\u4e9a\u7eb3"
     },
     {
@@ -6765,7 +6780,7 @@ let links = [
         "target": "\u7406\u5ff5VE-1"
     },
     {
-        "source": "\u4f20\u797aGE3",
+        "source": "传祺GE3",
         "target": "\u7406\u5ff5VE-1"
     },
     {
@@ -6785,7 +6800,7 @@ let links = [
         "target": "\u79d1\u5c1a"
     },
     {
-        "source": "\u4f20\u797aGM6",
+        "source": "传祺GM6",
         "target": "\u79d1\u5c1a"
     },
     {
@@ -6809,11 +6824,11 @@ let links = [
         "target": "\u59277 MPV"
     },
     {
-        "source": "\u4f20\u797aGM8",
+        "source": "传祺GM8",
         "target": "\u59277 MPV"
     },
     {
-        "source": "\u4f20\u797aGM6",
+        "source": "传祺GM6",
         "target": "\u59277 MPV"
     },
     {
@@ -6829,7 +6844,7 @@ let links = [
         "target": "\u542f\u8fb0T70"
     },
     {
-        "source": "\u4f20\u797aGS4",
+        "source": "传祺GS4",
         "target": "\u542f\u8fb0T70"
     },
     {
@@ -6853,7 +6868,7 @@ let links = [
         "target": "\u542f\u8fb0T70X"
     },
     {
-        "source": "\u4f20\u797aGS4",
+        "source": "传祺GS4",
         "target": "\u542f\u8fb0T70X"
     },
     {
@@ -6861,7 +6876,7 @@ let links = [
         "target": "\u542f\u8fb0T70X"
     },
     {
-        "source": "\u4f20\u797aGS4 PHEV",
+        "source": "传祺GS4 PHEV",
         "target": "\u827e\u745e\u6cfd7e"
     },
     {
@@ -6893,7 +6908,7 @@ let links = [
         "target": "\u65e5\u4ea7NV200"
     },
     {
-        "source": "\u4f20\u797aGM6",
+        "source": "传祺GM6",
         "target": "\u65e5\u4ea7NV200"
     },
     {
@@ -6909,7 +6924,7 @@ let links = [
         "target": "\u65e5\u4ea7D22\u53a2\u5f0f\u8f66"
     },
     {
-        "source": "\u4f20\u797aGS8",
+        "source": "传祺GS8",
         "target": "\u65e5\u4ea7D22\u53a2\u5f0f\u8f66"
     },
     {
@@ -6921,11 +6936,11 @@ let links = [
         "target": "\u65e5\u4ea7D22\u53a2\u5f0f\u8f66"
     },
     {
-        "source": "\u4f20\u797aGS4 PHEV",
+        "source": "传祺GS4 PHEV",
         "target": "\u797a\u667aEV"
     },
     {
-        "source": "\u4f20\u797aGE3",
+        "source": "传祺GE3",
         "target": "\u797a\u667aEV"
     },
     {
@@ -6941,7 +6956,7 @@ let links = [
         "target": "\u797a\u667aEV"
     },
     {
-        "source": "\u4f20\u797aGS4 PHEV",
+        "source": "传祺GS4 PHEV",
         "target": "\u797a\u667aPHEV"
     },
     {
@@ -6977,7 +6992,7 @@ let links = [
         "target": "\u8363\u5a01950"
     },
     {
-        "source": "\u4f20\u797aGA8",
+        "source": "传祺GA8",
         "target": "\u8363\u5a01950"
     },
     {
@@ -6989,7 +7004,7 @@ let links = [
         "target": "\u5927\u901aG50"
     },
     {
-        "source": "\u4f20\u797aGM6",
+        "source": "传祺GM6",
         "target": "\u5927\u901aG50"
     },
     {
@@ -7001,7 +7016,7 @@ let links = [
         "target": "\u5927\u901aG50"
     },
     {
-        "source": "\u4f20\u797aGM8",
+        "source": "传祺GM8",
         "target": "\u5927\u901aRG10"
     },
     {
@@ -7025,7 +7040,7 @@ let links = [
         "target": "\u5927\u901aRV80"
     },
     {
-        "source": "\u4f20\u797aGM8",
+        "source": "传祺GM8",
         "target": "\u5927\u901aRV80"
     },
     {
@@ -7045,11 +7060,11 @@ let links = [
         "target": "\u5927\u901aEG10"
     },
     {
-        "source": "\u4f20\u797aGM8",
+        "source": "传祺GM8",
         "target": "\u5927\u901aEG10"
     },
     {
-        "source": "\u4f20\u797aGM6",
+        "source": "传祺GM6",
         "target": "\u5927\u901aEG10"
     },
     {
@@ -7061,7 +7076,7 @@ let links = [
         "target": "\u5927\u901aEG10"
     },
     {
-        "source": "\u4f20\u797aGM8",
+        "source": "传祺GM8",
         "target": "\u5927\u901aFCV80"
     },
     {
@@ -7073,7 +7088,7 @@ let links = [
         "target": "\u5927\u901aFCV80"
     },
     {
-        "source": "\u4f20\u797aGE3",
+        "source": "传祺GE3",
         "target": "\u817e\u52bf"
     },
     {
@@ -7093,7 +7108,7 @@ let links = [
         "target": "\u817e\u52bf"
     },
     {
-        "source": "\u4f20\u797aGS4",
+        "source": "传祺GS4",
         "target": "\u9a6d\u80dcS330"
     },
     {
@@ -7113,7 +7128,7 @@ let links = [
         "target": "\u9a6d\u80dcS330"
     },
     {
-        "source": "\u4f20\u797aGS4",
+        "source": "传祺GS4",
         "target": "V77"
     },
     {
@@ -7141,7 +7156,7 @@ let links = [
         "target": "\u540d\u7235HS"
     },
     {
-        "source": "\u4f20\u797aGS5",
+        "source": "传祺GS5",
         "target": "\u540d\u7235HS"
     },
     {
@@ -7153,7 +7168,7 @@ let links = [
         "target": "\u540d\u7235HS"
     },
     {
-        "source": "\u4f20\u797aGS4",
+        "source": "传祺GS4",
         "target": "\u540d\u7235GS"
     },
     {
@@ -7181,7 +7196,7 @@ let links = [
         "target": "\u9a8f\u6d3eD80"
     },
     {
-        "source": "\u4f20\u797aGS4",
+        "source": "传祺GS4",
         "target": "\u9a8f\u6d3eD80"
     },
     {
@@ -7201,7 +7216,7 @@ let links = [
         "target": "\u4e91\u5ea6\u03c03"
     },
     {
-        "source": "\u4f20\u797aGE3",
+        "source": "传祺GE3",
         "target": "\u4e91\u5ea6\u03c03"
     },
     {
@@ -7217,7 +7232,7 @@ let links = [
         "target": "\u4f17\u6cf0T600"
     },
     {
-        "source": "\u4f20\u797aGS4",
+        "source": "传祺GS4",
         "target": "\u4f17\u6cf0T600"
     },
     {
@@ -7241,7 +7256,7 @@ let links = [
         "target": "\u4f17\u6cf0Z700"
     },
     {
-        "source": "\u4f20\u797aGA8",
+        "source": "传祺GA8",
         "target": "\u4f17\u6cf0Z700"
     },
     {
@@ -7253,7 +7268,7 @@ let links = [
         "target": "\u4f17\u6cf0Z700"
     },
     {
-        "source": "\u4f20\u797aGM6",
+        "source": "传祺GM6",
         "target": "\u4f17\u6cf0M300"
     },
     {
@@ -7285,7 +7300,7 @@ let links = [
         "target": "\u4f17\u6cf0T300 EV"
     },
     {
-        "source": "\u4f20\u797aGS8",
+        "source": "传祺GS8",
         "target": "\u4f17\u6cf0T300 EV"
     },
     {
@@ -7305,7 +7320,7 @@ let links = [
         "target": "\u4e2d\u534eH3"
     },
     {
-        "source": "\u4f20\u797aGA4",
+        "source": "传祺GA4",
         "target": "\u4e2d\u534eH3"
     },
     {
@@ -7317,7 +7332,7 @@ let links = [
         "target": "\u5c0a\u9a70"
     },
     {
-        "source": "\u4f20\u797aGA6",
+        "source": "传祺GA6",
         "target": "\u5c0a\u9a70"
     },
     {
@@ -7336,10 +7351,10 @@ let links = [
 
 let categories = [
     {
-        "name": "\u4f20\u797a"
+        "name": "传祺"
     },
     {
-        "name": "\u81ea\u4e3b"
+        "name": "\u81ea\u4e3b",
     },
     {
         "name": "\u5408\u8d44"

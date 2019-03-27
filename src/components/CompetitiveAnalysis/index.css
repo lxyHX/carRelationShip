@@ -1,6 +1,6 @@
 .main-wrap {
     width: 100%;
-    min-width: 1500px;
+    min-width: 1000px;
     background-color: #FFF;
     min-height:500px;
     height: 100%;
@@ -14,6 +14,8 @@
 }
 .car-selector {
     height: 50px;
+    display: flex;
+    justify-content: center;
 }
 .index-feedback {
     height: 300px;
@@ -43,12 +45,12 @@
 }
 .contrast-col-title {
     font-weight: bold;
-    font-size: 16px;
+    font-size: 14px;
     text-align: center;
 }
 .contrastTitle {
     font-weight: bold;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .comprehensiveRadarWrap {
@@ -59,6 +61,29 @@
 .index-bar-wrap {
     width: 100%;
     min-width: 600px;
-    height: 150px;
+    height: 200px;
     margin: auto;
+}
+.world_cloud_container {
+    margin: 0px auto;
+    /*background: url("../../assets/images/worldCloud/bg.png") no-repeat center;*/
+
+}
+.world_cloud_wrap {
+    width: 100%;
+    height: 470px;
+    background: url("../../assets/images/worldCloud/wc_bg.png") no-repeat center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.hot {
+    background: url("../../assets/images/hot.png") no-repeat center;
+    padding: 10px;
+    margin: 0 10px;
+}
+.world-cloud {
+    background: url("../../assets/images/worldCloud.png") no-repeat center;
+    padding: 10px;
+    margin:  0 10px;
 }

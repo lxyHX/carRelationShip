@@ -1,5 +1,24 @@
 .relationShipWrap {
     width: 100%;
-    min-height: calc(100vh - 100px);
+    min-height: calc(100vh);
+    /*min-height: calc(100vh - 100px);*/
     background: url("../../assets/images/relationship_bg.jpg");
+    position: relative;
+}
+.fullScreen {
+    cursor: pointer;
+    padding: 20px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+
+}
+.enter_fullscreen {
+    background: rgba(255, 255, 255, 0.2) url("../../assets/images/enter_fullScreen.png");
+    background-size: cover;
+}
+.exit_fullscreen {
+    background: rgba(255, 255, 255, 0.2) url("../../assets/images/exit_fullScreen.png");
+    background-size: cover;
 }

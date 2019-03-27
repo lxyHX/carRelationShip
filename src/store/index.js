@@ -5,7 +5,7 @@ import thunkMiddleware from 'redux-thunk'
 import { combineReducers } from 'redux-immutable'
 import config from '../config'
 import Immutable from 'immutable'
-import user from './User'
+
 
 let {reduxDevToolEnable} = config
 let defaultState = {
@@ -57,7 +57,7 @@ const composeEnhancers =
   }) : compose
 
 export default createStore(
-  combineReducers({user}),
+  combineReducers({}),
   Immutable.fromJS(defaultState),
   composeEnhancers(applyMiddleware(
     thunkMiddleware
