@@ -319,3 +319,6 @@ export function queryRecomContent(options) {
 export function queryTop10FirstLevelTag(options) {
   return requestJSON(apiPrefix + '/queryTop10FirstLevelTag', { method: 'POST',body: options},false)
 }
+export function queryRelationShipData (urlParam) {
+  return requestJSON(apiPrefix + '/getRelationShipDatas?reqCategory='+urlParam, { method: 'GET'},false)
+}

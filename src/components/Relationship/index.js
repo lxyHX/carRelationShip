@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
-import {data,links,categories} from '../../assets/mock/RelationshipOptions'
-import {withRouter } from 'react-router';
+import { queryRelationShipData } from '../../service/car'
+import { data, links, categories } from '../../assets/mock/RelationshipOptions'
+import { withRouter } from 'react-router';
+import { Spin } from 'antd'
 import style from './style.css'
 const echarts = require('echarts');
 
@@ -12,63 +14,84 @@ let chartOption = {
             "top": "10",
             "textStyle": {
                 "fontSize": 18,
-                color: "#FFF"},
+                "color": "#FFF"
+            },
             "subtextStyle": {
-                "fontSize": 12}}],
+                "fontSize": 12
+            }
+        }],
     "toolbox": {
         "show": true,
         "orient": "vertical",
         "left": "95%",
         "top": "center",
         "feature": {
-            "saveAsImage": {
-                "show": true,
-                "title": "save as image"},
+            // "saveAsImage": {
+            //     "show": true,
+            //     "title": "save as image"
+            // },
             "restore": {
                 "show": true,
-                "title": "restore"},
-            "dataView": {
-                "show": true,
-                "title": "data view"}}},
+                "title": "restore"
+            },
+            // "dataView": {
+            //     "show": true,
+            //     "title": "data view"
+            // }
+        },
+        "iconStyle": { "textPosition ": "left" }
+    },
     "series_id": 811278,
     "tooltip": {
         "trigger": "item",
         "triggerOn": "mousemove|click",
         "axisPointer": {
-            "type": "line" },
+            "type": "line"
+        },
         "textStyle": {
-            "fontSize": 14},
+            "fontSize": 16
+        },
         "backgroundColor": "rgba(50,50,50,0.7)",
         "borderColor": "#333",
-        "borderWidth": 0},
+        "borderWidth": 0
+    },
     "series": [
         {
             "type": "graph",
             "layout": "force",
             "circular": {
-                "rotateLabel": false},
+                "rotateLabel": false
+            },
             "force": {
                 "repulsion": 900,
                 "edgeLength": 50,
-                "gravity": 0.1 },
+                "gravity": 0.1
+            },
             "label": {
                 "normal": {
                     "show": true,
-                    color: "rgba(255,255,255,.8)",
+                    // color: "rgba(255,255,255,.8)",
                     "position": "right",
                     "textStyle": {
-                        "fontSize": 12}},
+                        "fontSize": 8
+                    }
+                },
                 "emphasis": {
                     "show": true,
                     "textStyle": {
-                        "fontSize": 12}}},
+                        "fontSize": 12
+                    }
+                }
+            },
             "lineStyle": {
                 "normal": {
                     "width": 1,
-                    "opacity": 1,
+                    "opacity": 0.5,
                     "curveness": 0.05,
                     "type": "solid",
-                    "color": "#aaa"}},
+                    "color": "#aaa"
+                }
+            },
             "roam": true,
             "focusNodeAdjacency": true,
             "data": [],
@@ -77,17 +100,17 @@ let chartOption = {
                 null,
                 null],
             itemStyle: {
-                normal: {
-                    borderColor: 'rgba(255, 255, 255, 0.3)',
-                    borderWidth: 8,
-                },
+                // normal: {
+                //     // borderColor: 'rgba(255, 255, 255, 0.3)',
+                //     borderWidth: 8,
+                // },
             },
-            "links":[],
+            "links": [],
         },
     ],
     "legend": [
         {
-            "data":[],
+            "data": [],
             selected: {
                 "未知": false,
             },
@@ -103,8 +126,9 @@ let chartOption = {
         },
     ],
     "animation": true,
-    "color":  ['#18ddd4', '#4185f7', '#62abe1', '#f1e871',  '#eeeeee'],
-    // "color":  ['rgba(255,255,255,.6)'],
+    "color": ['#ff0000', '#00ffff','#ffff00', '#00ff00', '#FFFFFF','#70DB93']    
+    // "color": ['#18ddd4', '#4185f7', '#62abe1', '#f1e871', '#eeeeee']    
+    // "color": ['#da513d', '#b49755', '#f1c1ac', '#acd0f1', '#bfbfbb', '#18ddd4', '#4185f7', '#62abe1', '#f1e871', '#eeeeee']
 };
 
 
@@ -112,67 +136,161 @@ let chartOption = {
 class Relationship extends PureComponent {
     constructor(props) {
         super(props);
-        this.state =  {fullScreen : false}
-
+        this.state = {
+            fullScreen: false,
+            loading: false,
+            // dataX: {},
+            // linksX: {},
+            // categoriesX: {}
+        }
+        // this.options
     }
 
-    componentDidMount () {
+    componentDidMount() {
+        let that = this;
+        //全局
         setTimeout(() => {
-            if (!this.mychart) this.mychart = echarts.init(document.getElementById('relationshipContainer'));
-            chartOption.series[0].data = data;
-            chartOption.series[0].categories = categories;
-            chartOption.series[0].links = links;
-            chartOption.legend[0].data = categories;
-            this.mychart.setOption(chartOption);
-            this.mychart.on('click', (option) => {
-                let node = option.data;
-                // 获取竞争车型
-                let competeLinks = links.filter(e => e.source === node.name || e.target === node.name);
-                if (node.category === '传祺') {
-                    // 页面跳转
-                    this.props.history.push('/performance/CompetitiveAnalysis',{query: {
-                        owner: node.name,
-                        competitors: competeLinks.map(e => e.source === node.name ? e.target : e.source).filter(e => e !== node.name ),
-                    }});
-                }
-            });
-            this.mychart.setOption(chartOption);
-            window.onresize =  () => {
-                this.mychart.resize();
-            }
-        },200);
+            that.initMapData(0);
+        }, 200);
     }
 
-    _fullScreen = ()=>{
+    _fullScreen = () => {
         const el = document.getElementById("fullScreenButton");
-        if(!this.state.fullScreen){//进入全屏,多重短路表达式
-            (el.requestFullscreen&&el.requestFullscreen())||
-            (el.mozRequestFullScreen&&el.mozRequestFullScreen())||
-            (el.webkitRequestFullscreen&&el.webkitRequestFullscreen())||(el.msRequestFullscreen&&el.msRequestFullscreen());
+        if (!this.state.fullScreen) {//进入全屏,多重短路表达式
+            (el.requestFullscreen && el.requestFullscreen()) ||
+                (el.mozRequestFullScreen && el.mozRequestFullScreen()) ||
+                (el.webkitRequestFullscreen && el.webkitRequestFullscreen()) || (el.msRequestFullscreen && el.msRequestFullscreen());
             this.setState({
                 fullScreen: true,
             })
-        }else{	//退出全屏,三目运算符
-            document.exitFullscreen?document.exitFullscreen():
-                document.mozCancelFullScreen?document.mozCancelFullScreen():
-                    document.webkitExitFullscreen?document.webkitExitFullscreen():'';
+        } else {	//退出全屏,三目运算符
+            document.exitFullscreen ? document.exitFullscreen() :
+                document.mozCancelFullScreen ? document.mozCancelFullScreen() :
+                    document.webkitExitFullscreen ? document.webkitExitFullscreen() : '';
             this.setState({
                 fullScreen: false,
             })
         }
     };
 
-    toggleFullScreen = () =>{
+    toggleFullScreen = () => {
         this._fullScreen();
     };
+    initMapData = (mode) => {
+        // this.setState({
+        //     dataX: data,
+        //     linksX: links,
+        //     categoriesX: categories
+        // });
+        console.log('cccccccccccheck in.')
+        let d = {}
+        switch (mode) {
+            case 0: {
+                //全局-车体
+                d = require("../../assets/mock/temp/GlobalBody")
+            } break;
+            case 1: {
+                //传祺-车体
+                d = require("../../assets/mock/temp/TrumpchiBody")
+            } break;
+            case 2: {
+                //传祺-汽车
+                d = require("../../assets/mock/temp/TrumpchiCar")
+            } break;
+            case 3: {                
+                //荣威-车体
+                d = require("../../assets/mock/temp/RongweiBody")
+            } break;
+        }
+        console.log(JSON.stringify(d.categories))
+        this.drawMap(d.data, d.categories, d.links);
+    }
+    drawMap = (dataX, categoriesX, linksX) => {
+        if (!this.mychart) this.mychart = echarts.init(document.getElementById('relationshipContainer'));
+        // this.initMapData();
+        chartOption.series[0].data = dataX;
+        chartOption.series[0].categories = categoriesX;
+        chartOption.series[0].links = linksX;
+        chartOption.legend[0].data = categoriesX;
+        //为toolbox加入内容
+        this.reSetChartOption();
+        this.mychart.setOption(chartOption);
+        this.mychart.on('click', (option) => {
+            let node = option.data;
+            // 获取竞争车型
+            let competeLinks = linksX.filter(e => e.source === node.name || e.target === node.name);
+            if (node.category === '传祺') {
+                // 页面跳转
+                this.props.history.push('/performance/CompetitiveAnalysis', {
+                    query: {
+                        owner: node.name,
+                        competitors: competeLinks.map(e => e.source === node.name ? e.target : e.source).filter(e => e !== node.name),
+                    }
+                });
+            }
+        });
+        this.mychart.setOption(chartOption);
+        window.onresize = () => {
+            this.mychart.resize();
+        }
 
-    render () {
+        this.setState({ loading: false });
+    }
+    reSetChartOption = () => {
+        let that = this;
+        chartOption.toolbox.feature.myTool_1 = {
+            show: true,
+            title: '传祺',//'国别',
+            icon: 'path://M511.968082 0c-282.763419 0-512 229.236581-512 512s229.236581 512 512 512 512.031918-229.236581 512.031918-512-229.236581-512-512.031918-512zM511.968082 47.877314c12.511938 0 24.896203 0.638364 37.184714 1.627829-5.330341 15.671841-2.13852 33.609875 9.064772 52.473537 25.885668 43.919456 25.406895 100.861542 8.969017 118.097375-10.820273 11.394801-59.878561 21.129855-66.996322 21.959728-53.909856 6.192133-77.305904 14.778131-94.1268 48.292251-8.20298 16.40596-4.755813 32.971511 5.681441 54.54822 3.287576 6.734742 24.225921 42.929992 27.290069 48.292251 16.852815 29.332835 26.045259 50.207344 29.332835 69.677452 4.021694 23.683312 1.851256 44.940839-12.288511 55.154666s-46.664422 11.330964-53.143819 9.09669c-5.266505-1.851256-12.894957-6.383642-26.907051-16.278287-6.128296-4.340877-48.356088-52.95231-82.093635-52.95231s-82.700081 45.260021-84.838601 47.207032c-20.299981 19.533944-33.51412 28.279534-49.568979 31.056418-37.727324 6.638988-64.602456 1.212892-108.809176-17.810361-0.54261-0.255346-1.532074-0.638364-2.776884-1.180974-0.031918-1.691665-0.127673-3.38333-0.127673-5.106914 0-255.920204 208.202481-464.154604 464.122686-464.154604zM51.994763 573.187208l7.819961 3.351412c37.886915 13.277975 68.879496 16.597469 108.489994 9.671218 28.566798-5.043077 48.994452-18.54448 76.029175-44.493984 2.234275-2.170438 39.961598-33.322611 47.462378-31.247927 0 0 48.164578 37.08896 54.675893 41.749018 17.746525 12.607693 28.630634 19.087089 39.833926 22.981111 13.054548 4.468549 64.123683 2.936475 90.871143-10.6926 26.715541-13.565239 55.410012-61.15529 41.302163-110.213578-7.500779-26.268686-15.671841-52.313946-35.30154-86.562184-26.428278-45.962222-31.120254-55.601521-31.567109-54.675893 6.032542-12.160838 17.235833-16.21445 54.356711-20.491491 7.245434-0.829873 77.242067-15.608004 98.05274-37.408142 33.833302-35.556885 13.086466-158.378156-6.383642-189.658001-2.330029-3.734431-2.521539-6.95817-1.340565-9.830809 215.799015 39.802007 379.794776 229.204663 379.794776 456.334642 0 43.408765-6.128296 85.413129-17.331588 125.278973l-2.808802-2.13852c0 0.063836-0.031918 0.127673-0.031918 0.191509-11.650146-0.829873-23.396048 0.063836-35.141949 3.000312-41.461754 10.501091-69.900879 45.834549-80.433888 106.06421-1.149056 11.23521-28.247615 26.013341-63.325728 30.801072-25.598404 3.511003-61.282962-1.468238-64.857802-1.340565-93.073499-11.522474-188.221682 10.437255-244.525404 56.750577-45.515367 37.408142-60.772271 86.338757-42.706564 135.971573-0.861792-0.191509-1.691665-0.414937-2.553457-0.606446l0.063836 0.031918 0.670282 1.500156c-193.903123-37.727324-344.972009-196.584253-371.144941-394.317561zM511.968082 976.154604c-8.330653 0-16.629387-0.255346-24.896203-0.670282-29.23708-40.057353-23.108784-75.678075 13.054548-105.425846 44.653575-36.769777 125.917337-55.473848 210.404838-45.355776 11.873574-0.255346 46.632504-0.766037 51.611745-0.89371 81.199925-1.915093 123.044698-16.788978 128.662303-72.358581 6.990088-39.833926 22.023565-58.410324 42.515055-63.64491 2.298111-0.574528 4.723895-1.021383 7.181597-1.276728-0.159591 0.478773-0.383019 0.925628-0.54261 1.404401l2.266193-2.13852c-68.943333 170.060221-235.779814 290.391871-430.257465 290.391871z',
+            onclick: function () {
+                that.onMyToolClick(1);
+            }
+        }
+        // chartOption.toolbox.feature.myTool_2 = {
+        //     show: true,
+        //     title: '传祺-汽车',//'车体类型',
+        //     icon: 'path://M603.707678 679.391405 420.783509 679.391405c0 0-33.55728-3.583618-60.987003-29.551036-15.621792-14.802124-19.837814-34.791387-19.837814-34.791387s-9.134031-13.095249-3.043313-25.311479c7.115048-14.235213 18.697851-10.703783 18.697851-10.703783l313.266773 0c0 0 11.582803-3.53143 18.697851 10.703783 6.090718 12.216229-3.076058 25.311479-3.076058 25.311479s-4.184299 20.523429-19.805068 35.303041C637.263935 676.348092 603.707678 679.391405 603.707678 679.391405M334.272179 542.736025c0 0-19.21462 0.884137-29.885658-3.304256-10.670014-4.210905-11.55415-4.840238-25.63996-12.128225-11.837606-6.119371-32.927947-8.939603-32.927947-8.939603l-151.676491-30.546713c0 0-17.417695 0.989537-20.204158-17.201777-1.879813-12.354376 3.554966-21.433148 3.554966-21.433148l39.359426-49.117674c0 0 11.013845-19.442818 24.927739-26.702152 13.917988-7.259334 37.734416-5.723352 37.734416-5.723352l665.462161 0c0 0 23.821545-1.534959 37.734416 5.723352 13.920034 7.260357 24.927739 26.702152 24.927739 26.702152l39.359426 49.117674c0 0 5.434779 9.078773 3.560082 21.433148-2.821255 18.192338-20.205181 17.201777-20.205181 17.201777l-151.680585 30.546713c0 0-21.116947 2.814092-32.927947 8.939603-14.08581 7.286963-14.999622 7.916297-25.668613 12.128225-10.67513 4.182252-29.851888 3.304256-29.851888 3.304256L334.272179 542.736025 334.272179 542.736025zM197.042725 331.340407c0 0-5.863545 2.669806-13.71742-8.401344-7.849782-11.103896 5.863545-24.689309 5.863545-24.689309l57.972343-78.721923c0 0 9.729595-15.259542 26.490328-24.822338 17.101493-9.740852 117.903294-15.403828 154.358577-15.659655 13.373589-0.088004 155.091264-0.088004 168.472016 0 36.455283 0.255827 137.251967 5.918803 154.352437 15.659655 16.766872 9.562796 26.468838 24.822338 26.468838 24.822338l57.993832 78.721923c0 0 13.718443 13.58439 5.864568 24.689309-7.855922 11.07115-13.718443 8.401344-13.718443 8.401344L197.042725 331.340407 197.042725 331.340407zM402.480654 143.881968c-54.122665 0-130.73146 4.984524-145.589866 13.751189-15.565511 9.195429-18.324344 15.659655-18.324344 15.659655l-69.438489 94.466512c0 0-8.027837 10.93198-14.202467 14.263865-9.901511 5.350868-104.240109 14.72026-104.240109 14.72026s-13.091156 3.047406-21.341051 9.93528c-9.907651 8.261151-6.80294 22.152533-6.80294 22.152533s4.523013 19.87056 28.14399 31.714306c13.891382 6.976902 32.015158 8.033977 32.015158 8.033977s8.567119-2.051729 11.325953 0.511653c2.731204 2.53166-6.575766 12.840446-6.575766 12.840446l-41.688471 48.570205c0 0-30.023804 38.497802-38.530548 67.246567-7.231705 24.461111-7.231705 54.267974-7.231705 54.267974l0 87.122243 0 24.454972 0 119.210056c0 0-0.478907 58.479903 14.230096 71.346955 18.040888 15.804964 71.145363 15.287171 71.145363 15.287171l118.927623 0c0 0 16.505929 1.02433 28.199249-11.470239 11.670807-12.473079 4.071735-32.255635 22.086018-43.98784 4.978385-3.215228 17.300015-4.327562 17.300015-4.327562l480.71446 0c0 0 12.32163 1.112334 17.273409 4.327562 18.040888 11.732206 10.441816 31.514761 22.106484 43.98784 11.69946 12.493545 28.205389 11.470239 28.205389 11.470239l118.9266 0c0 0 53.104475 0.512676 71.145363-15.287171 14.70798-12.867052 14.223956-71.346955 14.223956-71.346955L1024.484024 663.59258l0-24.454972L1024.484024 552.015366c0 0 0-29.806863-7.226588-54.267974-8.506744-28.748764-38.529525-67.246567-38.529525-67.246567l-41.694611-48.570205c0 0-9.30083-10.307763-6.569626-12.840446 2.758834-2.563382 11.325953-0.511653 11.325953-0.511653s18.123776-1.057075 32.015158-8.033977c23.620977-11.842723 28.14399-31.714306 28.14399-31.714306s3.098571-13.891382-6.80294-22.152533c-8.284687-6.886851-21.341051-9.93528-21.341051-9.93528s-94.343715-9.369392-104.246249-14.72026c-6.17463-3.332908-14.20349-14.263865-14.20349-14.263865l-69.438489-94.466512c0 0-2.752694-6.464225-18.324344-15.659655-14.852266-8.766664-91.461061-13.751189-145.589866-13.751189-17.246803-0.484024-109.763916-1.479701-109.763916-1.479701S419.726433 143.397944 402.480654 143.881968M263.748986 773.346263c0 0-20.259416 1.057075-35.05847 9.172917-21.85782 11.982916-11.69946 29.122271-23.39278 43.642986-4.63967 5.779633-23.364127 4.839215-23.364127 4.839215l-85.375459 0c0 0-40.46562 1.541099-52.132334-8.139378-8.621355-7.147794-8.139378-50.250474-8.139378-50.250474l0-52.987818c0 0-2.536776-15.799848 12.69002-30.574343 15.254425-14.753005 30.762631-11.131525 30.762631-11.131525l132.162042 7.059789c0 0 98.03785 1.874697 115.621321 7.91118 21.968337 7.515161 33.157167 9.540284 47.270607 16.799618 5.490038 2.847861 24.843828 4.529153 39.870056 5.296633l0 0.712221 195.162912 0 0-0.712221c15.026228-0.76748 34.351366-2.447748 39.870056-5.296633 14.113439-7.264451 25.301246-9.284457 47.270607-16.799618 17.58347-6.036483 115.593691-7.91118 115.593691-7.91118l132.189671-7.059789c0 0 15.509229-3.621481 30.762631 11.131525 15.226796 14.775518 12.69002 30.574343 12.69002 30.574343l0 52.987818c0 0 0.483001 43.10268-8.139378 50.250474-11.666714 9.679453-52.132334 8.139378-52.132334 8.139378l-85.375459 0c0 0-18.724457 0.940418-23.364127-4.839215-11.69332-14.520715-1.534959-31.66007-23.39278-43.642986-14.798031-8.115841-35.05847-9.172917-35.05847-9.172917L263.748986 773.346263 263.748986 773.346263zM132.817981 322.711889c3.242857 3.070942-2.363837 6.575766-2.509147 6.347568-0.083911-0.145309-14.396895 10.474562-16.928554 11.615549-4.182252 1.908466-14.285355 1.341554-14.285355 1.341554l-16.761756 0c0 0-10.44591 0.254803-17.016559-2.792603-6.602372-3.076058-14.997576-5.296633-8.911974-10.759041 8.511861-7.631818 64.798818-8.801457 64.798818-8.801457S128.688941 318.812069 132.817981 322.711889M50.089815 626.12627c-6.492878-9.936303-9.534144-20.244067-9.534144-20.244067l0-40.11565c0 0-1.908466-19.503193 6.858198-34.023908 5.746888-9.507538 27.659967-7.259334 27.659967-7.259334l168.843476 30.579459c0 0 20.462031 3.043313 30.758538 11.471262 10.275018 8.399297 38.618553 63.808258 30.224372 74.884524-8.366551 11.070126-52.587706 6.886851-52.587706 6.886851l-185.605232-9.168824C66.706261 639.136585 56.576553 636.060527 50.089815 626.12627M891.645576 322.711889c4.155646-3.89982 11.644201-3.049452 11.644201-3.049452s56.285934 1.169639 64.798818 8.801457c6.085602 5.463432-2.309602 7.682983-8.911974 10.759041-6.570649 3.047406-17.018605 2.792603-17.018605 2.792603l-16.760732 0c0 0-10.103102 0.566912-14.285355-1.341554-2.532683-1.140986-16.844643-11.760858-16.934694-11.615549C894.037043 329.286632 888.430348 325.781808 891.645576 322.711889M974.401372 626.12627c-6.458085 9.93528-16.616446 13.011338-16.616446 13.011338l-185.605232 9.168824c0 0-44.221154 4.182252-52.587706-6.892991-8.394181-11.075243 19.949354-66.479087 30.224372-74.878384 10.296507-8.42795 30.729885-11.477402 30.729885-11.477402l168.872129-30.573319c0 0 21.913079-2.25332 27.665083 7.259334 8.761548 14.520715 6.853082 34.023908 6.853082 34.023908l0 40.11565C983.935516 605.882204 980.893226 616.189967 974.401372 626.12627',
+        //     onclick: function () {
+        //         that.onMyToolClick(2);
+        //     }
+        // }
+        chartOption.toolbox.feature.myTool_3 = {
+            show: true,
+            title: '荣威',//'汽车级别',
+            icon: 'path://M521.6 910.3L73.5 678.1l27.6-53.3 420.5 217.9 420.6-217.9 27.6 53.3z"  ></path><path d="M518.7 734.9L70.5 502.7l27.6-53.3 420.6 217.9 420.5-217.9 27.7 53.3z"  ></path><path d="M521.7 168.9l304.2 158.3-304.3 157.6-304.1-157.6 304.2-158.3m0-67.7L87.3 327.3l434.4 225.1L956 327.3 521.7 101.2z',
+            onclick: function () {
+                that.onMyToolClick(3);
+            }
+        }
+    }
+    onMyToolClick = (xType) => {
+        this.setState({ loading: true });
+        console.log('btn click.')
+        this.initMapData(xType);
+        // this._queryRelationShipData(xType);
+    }
+    //获取数据
+    async _queryRelationShipData(cType) {
+        const rep = await queryRelationShipData(cType);
+        let that = this;
+        if (rep.isSuccess && rep.errorCode == 0) {
+            that.setState({
+                dataX: rep.data,
+                linksX: rep.links,
+                categoriesX: rep.categories
+            });
+        } else {
+            // that.$message.error('数据加载失败：' + rep.errorMsg);
+        }
+        this.setState({ loading: false });
+    }
+    render() {
         let fullscreenIcon = !this.state.fullScreen ? style["enter_fullscreen"] : style["exit_fullscreen"];
-        return (<div id="fullScreenButton" >
-            <span onClick={this.toggleFullScreen.bind(this)} className={style["fullScreen"] + " " + fullscreenIcon}/><div className={style.relationShipWrap} id="relationshipContainer" />
-        </div>)
+        return (<div><Spin spinning={this.state.loading}><div id="fullScreenButton" >
+            <span onClick={this.toggleFullScreen.bind(this)} className={style["fullScreen"] + " " + fullscreenIcon} /><div className={style.relationShipWrap} id="relationshipContainer" />
+        </div></Spin></div>)
     }
 }
 
 Relationship = withRouter(Relationship);
-export default  Relationship;
+export default Relationship;
